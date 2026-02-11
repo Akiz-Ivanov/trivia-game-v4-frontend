@@ -12,7 +12,6 @@ import RadioDrawer from "./RadioDrawer";
 import StationFilter from "./StationFilter";
 import VolumeSlider from "./VolumeSlider";
 import Marquee from "react-fast-marquee";
-import { useRadioContext } from "@/hooks/useRadioContext";
 import UtilityButton from "./UtilityButton";
 import { cn } from "@/lib/utils";
 import RadioCatSvg from "@/assets/svgs/radio-cat.svg?react";
@@ -53,10 +52,10 @@ const RadioWidget = ({
   const setVolume = useRadioStore((state) => state.setVolume);
   const loadingHowl = useRadioStore((state) => state.loadingHowl);
   const howlError = useRadioStore((state) => state.howlError);
-  const mode = useRadioStore((state) => state.mode);
-  const stationQuery = useRadioStore((state) => state.stationQuery);
   const toggleFavorite = useRadioStore((state) => state.toggleFavorite);
-  const isFavorite = useRadioStore((state) => state.isFavorite);
+  const isFavorite = useRadioStore((state) =>
+    state.favorites.some((s) => s.stationuuid === currentStation?.stationuuid),
+  );
 
   //*====== Close radio widget on click outside ======
   useEffect(() => {
@@ -84,18 +83,22 @@ const RadioWidget = ({
   }, []);
 
   useEffect(() => {
-    if (mode) {
-      setOpenDrawer(true);
-    }
-  }, [mode]);
+    return useRadioStore.subscribe(
+      (state) => state.mode,
+      (mode) => {
+        if (!mode) return;
+        setOpenDrawer(true);
+        if (mode === "popular") setOpenScreen(true);
+      },
+    );
+  }, []);
 
   useEffect(() => {
-    if (stationQuery.length > 0) {
-      setOpenScreen(true);
-    } else if (stationQuery.length === 0) {
-      setOpenScreen(false);
-    }
-  }, [stationQuery]);
+    return useRadioStore.subscribe(
+      (state) => state.stationQuery,
+      (query) => setOpenScreen(query.length > 0),
+    );
+  }, []);
 
   const stationDisplay = loadingHowl
     ? `Starting playback.`
@@ -154,7 +157,7 @@ const RadioWidget = ({
                       if (!currentStation) return;
                       toggleFavorite(currentStation);
                     }}
-                    isPressed={isFavorite(currentStation?.stationuuid || "")}
+                    isPressed={isFavorite}
                   >
                     Favorite
                   </UtilityButton>

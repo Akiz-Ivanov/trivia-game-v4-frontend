@@ -8,8 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Virtuoso } from "react-virtuoso";
-import { useRadioContext } from "@/hooks/useRadioContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRadioStore } from "@/store/radio";
 
@@ -25,10 +24,6 @@ const RadioLookupCombobox = () => {
     setOpen(false);
     setStationQuery(name); //* Pass selection up
   };
-
-  useEffect(() => {
-    setValue("");
-  }, [mode]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
 

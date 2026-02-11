@@ -1,5 +1,4 @@
 import { Virtuoso } from "react-virtuoso";
-import { useRadioContext } from "@/hooks/useRadioContext";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { Star } from "lucide-react";
@@ -55,35 +54,17 @@ const StationList = () => {
     };
   }, []);
 
-  // const {
-  //   stations,
-  //   currentStation,
-  //   loadingFetch,
-  //   fetchError,
-  //   selectStation,
-  //   favorites,
-  //   toggleFavorite,
-  //   isFavorite,
-  //   setActiveList,
-  //   reorderFavorites,
-  //   loadFallbackStations,
-  // } = useRadioContext()
-
   const stations = useRadioStore((state) => state.stations);
-  const currentStation = useRadioStore((state) => state.currentStationInfo);
   const loadingFetch = useRadioStore((state) => state.loadingFetch);
   const fetchError = useRadioStore((state) => state.fetchError);
-  const selectStation = useRadioStore((state) => state.selectStation);
   const favorites = useRadioStore((state) => state.favorites);
-  const toggleFavorite = useRadioStore((state) => state.toggleFavorite);
-  const isFavorite = useRadioStore((state) => state.isFavorite);
   const setActiveList = useRadioStore((state) => state.setActiveList);
   const reorderFavorites = useRadioStore((state) => state.reorderFavorites);
   const loadFallbackStations = useRadioStore(
     (state) => state.loadFallbackStations,
   );
 
-  // Handle drag end for favorites
+  //* Handle drag end for favorites
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -162,10 +143,6 @@ const StationList = () => {
                 <StationItem
                   key={`station.stationuuid-${index}`}
                   station={station}
-                  currentStation={currentStation}
-                  isFavorite={isFavorite}
-                  toggleFavorite={toggleFavorite}
-                  selectStation={selectStation}
                 />
               )}
             />
@@ -234,10 +211,6 @@ const StationList = () => {
                     <DraggableStationItem
                       key={`station.stationuuid-${index}`}
                       station={station}
-                      currentStation={currentStation}
-                      isFavorite={isFavorite}
-                      toggleFavorite={toggleFavorite}
-                      selectStation={selectStation}
                     />
                   )}
                 />

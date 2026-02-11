@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { useRadioContext } from "@/hooks/useRadioContext";
 import { XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRadioStore } from "@/store/radio";
@@ -8,7 +7,7 @@ import { useRadioStore } from "@/store/radio";
 const RadioSearchInput = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const setStationQuery = useRadioStore();
+  const setStationQuery = useRadioStore((state) => state.setStationQuery);
 
   //*====== Live search (debounced) ======
   useEffect(() => {

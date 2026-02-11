@@ -16,6 +16,7 @@ export type PlaybackSlice = {
 
 let audioInstance: Howl | null = null;
 let audioRetryRef = false;
+let currentStationUrl = "";
 
 export const createPlaybackSlice: StateCreator<
   RadioStore,
@@ -51,6 +52,9 @@ export const createPlaybackSlice: StateCreator<
   },
 
   initializeAudio: (station: Station) => {
+    if (currentStationUrl === station.url_resolved) return;
+    currentStationUrl = station.url_resolved;
+
     //* Clean up previous
     audioInstance?.unload();
     audioInstance = null;
@@ -97,6 +101,7 @@ export const createPlaybackSlice: StateCreator<
   cleanupAudio: () => {
     audioInstance?.unload();
     audioInstance = null;
+    currentStationUrl = "";
     set({ isPlaying: false });
   },
 });

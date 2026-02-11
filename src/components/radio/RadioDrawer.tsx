@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRadioContext } from "@/hooks/useRadioContext";
 import StationList from "./StationList";
 import RadioLookupCombobox from "./RadioLookupCombobox";
 import RadioSearchInput from "./RadioSearchInput";
@@ -38,7 +37,7 @@ const RadioDrawer = ({ openDrawer, openScreen }: RadioDrawerProps) => {
         inert={!openDrawer}
       >
         {mode === "country" || mode === "tag" ? (
-          <RadioLookupCombobox />
+          <RadioLookupCombobox key={mode} />
         ) : mode === "search" ? (
           <RadioSearchInput />
         ) : null}

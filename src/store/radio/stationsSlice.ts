@@ -83,13 +83,30 @@ export const createStationsSlice: StateCreator<
         set({
           currentStationId: data[0].stationuuid,
           currentStationInfo: data[0],
+          isPlaying: true,
         });
+        get().initializeAudio(data[0]);
       }
     } catch (err) {
       if (isAbortError(err)) return;
       console.error("Failed to fetch stations:", err);
       if (signal.aborted) return;
+
       set({ fetchError: "Failed to load stations" });
+
+      const { currentStationId, favorites } = get();
+
+      if (!currentStationId && favorites.length > 0) {
+        set({
+          stations: favorites,
+          activeList: favorites,
+          activeListType: "favorites",
+          currentStationId: favorites[0].stationuuid,
+          currentStationInfo: favorites[0],
+          fetchError: "Using your favorites (APIs unavailable)",
+        });
+        get().initializeAudio(favorites[0]);
+      }
     } finally {
       if (!signal.aborted) set({ loadingFetch: false });
     }
