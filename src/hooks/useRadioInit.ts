@@ -6,6 +6,14 @@ export const useRadioInit = () => {
   const mode = useRadioStore((state) => state.mode);
   const stationQuery = useRadioStore((state) => state.stationQuery);
   const limit = useRadioStore((state) => state.limit);
+  const currentStationInfo = useRadioStore((state) => state.currentStationInfo);
+  const initializeAudio = useRadioStore((state) => state.initializeAudio);
+
+  useEffect(() => {
+    if (currentStationInfo) {
+      initializeAudio(currentStationInfo);
+    }
+  }, []);
 
   useEffect(() => {
     fetchStations();
