@@ -12,7 +12,6 @@ import { useSoundManager } from "./hooks/useSoundManager";
 import useHoverDetection from "./hooks/useHoverDetection";
 import { Toaster } from "@/components/ui/sonner";
 import RadioWidget from "./components/radio/RadioWidget";
-import { RadioProvider } from "./context/RadioProvider";
 import useLocalStorageState from "use-local-storage-state";
 import { showToastInfo } from "./components/common/ToastWrapper";
 import { SparklesCore } from "@/components/ui/sparkles";
@@ -207,19 +206,17 @@ function App(): React.JSX.Element {
               <GameManager triviaData={triviaData} resetGame={resetGame} />
             )}
             {isRadioOn && (
-              <RadioProvider>
-                <RadioWidget
-                  isRadioOpen={isRadioOpen}
-                  handleRadioOpen={() => setIsRadioOpen(true)}
-                  handleRadioClose={() => setIsRadioOpen(false)}
-                  powerOff={() => {
-                    setIsRadioOn(false);
-                    showToastInfo(
-                      "Radio turned off! You can turn it back on in the menu.",
-                    );
-                  }}
-                />
-              </RadioProvider>
+              <RadioWidget
+                isRadioOpen={isRadioOpen}
+                handleRadioOpen={() => setIsRadioOpen(true)}
+                handleRadioClose={() => setIsRadioOpen(false)}
+                powerOff={() => {
+                  setIsRadioOn(false);
+                  showToastInfo(
+                    "Radio turned off! You can turn it back on in the menu.",
+                  );
+                }}
+              />
             )}
           </ErrorBoundary>
         </div>
