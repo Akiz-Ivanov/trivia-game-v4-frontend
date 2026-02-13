@@ -21,6 +21,8 @@ const GameForm = ({
   const timer = useSettingsStore((state) => state.timer);
   const backgroundGlow = useSettingsStore((state) => state.backgroundGlow);
 
+  const toggleTimer = useSettingsStore((state) => state.toggleTimer);
+
   const isHalloween = theme === "halloween";
 
   return (
@@ -114,7 +116,7 @@ const GameForm = ({
                 src={newYear}
                 alt=""
                 className="absolute top-[-40%] left-0 w-40 opacity-70 hover:opacity-100 hover:brightness-125
-                            transition-opacity duration-500 z-[1]"
+                            transition-opacity duration-500 z-1"
               />
             )}
 
@@ -124,7 +126,7 @@ const GameForm = ({
                 alt=""
                 fetchPriority="high"
                 className="absolute top-[-60%] right-0 w-40 opacity-30 hover:opacity-100
-                            transition-opacity duration-500 z-[1]"
+                            transition-opacity duration-500 z-1"
               />
             )}
           </div>

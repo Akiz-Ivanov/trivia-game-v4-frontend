@@ -8,13 +8,8 @@ import AuthDialog from "./auth/AuthDialog";
 import MenuCollapsible from "./MenuCollapsible";
 import ToggleSwitch from "./common/ToggleSwitch";
 import { cn } from "@/lib/utils";
-import {
-  IoFlash,
-  IoConstruct,
-  IoLogInOutline,
-  IoLogOutOutline,
-} from "react-icons/io5";
-import { GiScrollQuill, GiBookmark } from "react-icons/gi";
+import { IoConstruct, IoLogInOutline, IoLogOutOutline } from "react-icons/io5";
+import { GiBookmark } from "react-icons/gi";
 import { showToastSuccess } from "./common/ToastWrapper";
 import ThemedIcon from "./ThemedIcon";
 import ticket1 from "@/assets/svgs/halloween/ticket-1.svg";

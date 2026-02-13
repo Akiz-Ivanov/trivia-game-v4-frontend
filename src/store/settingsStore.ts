@@ -38,8 +38,8 @@ export const useSettingsStore = create<Settings & SettingsActions>()(
       sound: true,
       backgroundPattern: true,
       sparkles: true,
-      timer: true,
-      radioTheme: "retro",
+      timer: false,
+      radioTheme: "futuristic",
       theme: "default",
 
       //* Actions

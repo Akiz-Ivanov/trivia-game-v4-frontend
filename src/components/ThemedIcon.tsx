@@ -7,7 +7,6 @@ import {
   GiScrollQuill,
   GiWitchFlight,
   GiGhost,
-  GiMusicalScore,
 } from "react-icons/gi";
 import { useSettingsStore } from "@/store/settingsStore";
 
