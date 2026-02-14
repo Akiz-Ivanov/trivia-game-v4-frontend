@@ -144,9 +144,9 @@ const QuizCard = ({
                 boxShadow:
                   selectedAnswer && isXs
                     ? [
-                        `0 0 0 calc(4px + 1px) rgba(255,255,255,0.06), ${difficultyShadow}`, // default
+                        `0 0 0 calc(4px + 1px) rgba(255,255,255,0.06), ${difficultyShadow}`, //* default
                         `0 0 0 calc(4px + 1px) ${isCorrect ? "rgba(34,197,94,0.8)" : "rgba(239,68,68,0.8)"}, ${difficultyShadow}`, //* flash
-                        `0 0 0 calc(4px + 1px) rgba(255,255,255,0.06), ${difficultyShadow}`, // back to default
+                        `0 0 0 calc(4px + 1px) rgba(255,255,255,0.06), ${difficultyShadow}`, //* back to default
                       ]
                     : undefined,
               }
@@ -168,18 +168,6 @@ const QuizCard = ({
             : undefined
         }
       >
-        {isTimerEnabled && (
-          <div className="fixed left-1 bottom-1 xs:left-3 xs:bottom-2 z-1">
-            <CircularTimer
-              timeLeft={timeLeft}
-              totalTime={totalTime}
-              size={42}
-              // size={72}
-              strokeWidth={4}
-            />
-          </div>
-        )}
-
         {/* Time's up notification */}
         {isXs && animations && isTimerEnabled && (
           <AnimatePresence>
@@ -274,16 +262,31 @@ const QuizCard = ({
           />
         )}
 
-        <AnimatedScore score={totalScore} />
+        <div className="w-full flex justify-between items-center relative">
+          <AnimatedScore score={totalScore} />
 
-        <ComboMeter currentStreak={currentStreak} isHalloween={isHalloween} />
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <ComboMeter
+              currentStreak={currentStreak}
+              isHalloween={isHalloween}
+            />
+          </div>
+
+          {isTimerEnabled && (
+            <div>
+              <CircularTimer
+                timeLeft={timeLeft}
+                totalTime={totalTime}
+                size={42}
+                strokeWidth={4}
+              />
+            </div>
+          )}
+        </div>
 
         {/* ====== Question ====== */}
         <h2
-          className="
-                            text-[clamp(1.3rem,2.5vw,1.75rem)]
-                            font-bold leading-1.4 mt-2 mb-2 text-balance break-words
-                        "
+          className="text-[clamp(1.3rem,2.5vw,1.75rem)] font-bold leading-1.4 mt-2 mb-2 text-balance wrap-break-word"
           id={`question-${questionData.id}`}
         >
           {insertSoftHyphens(questionData.question)}

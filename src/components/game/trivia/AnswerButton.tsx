@@ -51,7 +51,7 @@ const answerButtonVariants = cva(
         className:
           "scale-100 shadow-none hover:shadow-none hover:scale-100 bg-[linear-gradient(135deg,rgba(0,195,255,0.8),rgba(214,0,186,0.8))]",
       },
-      //* Halloween theme + idle state - PUMPKIN GRADIENT HERE
+      //* Halloween theme + idle state
       {
         theme: "halloween",
         answerState: "idle",

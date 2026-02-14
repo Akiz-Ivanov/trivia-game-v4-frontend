@@ -40,6 +40,7 @@ const RadioWidget = ({
   const theme = radioTheme;
 
   const widgetRef = useRef<HTMLDivElement>(null);
+  const firstFocusableRef = useRef<HTMLButtonElement>(null);
 
   useRadioInit();
 
@@ -81,6 +82,16 @@ const RadioWidget = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Focus management when radio opens
+  useEffect(() => {
+    if (isRadioOpen && firstFocusableRef.current) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        firstFocusableRef.current?.focus();
+      }, 100);
+    }
+  }, [isRadioOpen]);
 
   useEffect(() => {
     return useRadioStore.subscribe(
@@ -134,6 +145,7 @@ const RadioWidget = ({
               <div className="h-1/2 radio-top-half py-3.5 px-4 flex flex-col gap-3.5">
                 <div className="flex flex-row justify-between px-1 gap-2">
                   <UtilityButton
+                    ref={firstFocusableRef}
                     onClick={() => setOpenDrawer(!openDrawer)}
                     isPressed={openDrawer}
                   >
@@ -246,16 +258,23 @@ const RadioWidget = ({
           </div>
         </div>
       ) : (
-        <RadioCatSvg
+        <button
           onClick={handleRadioOpen}
-          className="w-18 xs:w-22 sm:w-24 lg:w-42 h-auto shadow-lg cursor-pointer
+          className="group p-0 bg-transparent border-none cursor-pointer
             transition-all duration-300
-            [pointer-events:none] [&_*]:[pointer-events:visiblePainted]
             hover:-translate-y-1.5 
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2
             hover:[filter:drop-shadow(0_0_15px_rgba(139,92,246,0.6))_drop-shadow(0_0_10px_rgba(59,130,246,0.4))]
-            hover:brightness-110"
-          title="Open Radio"
-        />
+            focus-visible:[filter:drop-shadow(0_0_15px_rgba(139,92,246,0.6))_drop-shadow(0_0_10px_rgba(59,130,246,0.4))]
+            rounded-lg"
+          aria-label="Open Radio Player"
+        >
+          <RadioCatSvg
+            className="w-18 xs:w-22 sm:w-24 lg:w-42 h-auto shadow-lg
+              [pointer-events:none] [&_*]:[pointer-events:visiblePainted]
+              group-hover:brightness-110"
+          />
+        </button>
       )}
     </div>
   );
