@@ -2,12 +2,12 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./ui/collapsible";
+} from "../ui/collapsible";
 import { useEffect, useRef, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SparklesCore } from "./ui/sparkles";
+import { SparklesCore } from "@/components/ui/sparkles";
 import { useSettingsStore } from "@/store/settingsStore";
 
 type MenuCollapsibleProps = {
@@ -118,6 +118,7 @@ const MenuCollapsible = ({
               focus:border-none outline-none
               focus-visible:ring-2 focus-visible:ring-ring
               focus-visible:ring-offset-2 focus-visible:ring-offset-background
+              
               ${open ? "rounded-b-none" : ""}
             `,
               triggerClassName,

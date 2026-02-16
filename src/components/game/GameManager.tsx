@@ -43,9 +43,11 @@ const GameManager = ({
   //* ====== Shuffle answers ======
   useEffect(() => {
     if (triviaData.length) {
-      const { incorrect_answers, correct_answer } =
-        triviaData[currentQuestionIndex];
-      const answers = [...incorrect_answers, correct_answer];
+      const {
+        incorrect_answers: incorrectAnswers,
+        correct_answer: correctAnswer,
+      } = triviaData[currentQuestionIndex];
+      const answers = [...incorrectAnswers, correctAnswer];
       const shuffledAnswers = shuffleArray(answers);
       setShuffledAnswers(shuffledAnswers);
     }

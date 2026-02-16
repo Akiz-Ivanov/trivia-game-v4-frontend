@@ -5,7 +5,7 @@ import triviadbApi from "./services/triviadbApi";
 import GameForm from "./components/game-form/GameForm";
 import GameManager from "./components/game/GameManager";
 import ErrorScreen from "./components/common/ErrorScreen";
-import Menu from "./components/Menu";
+import Menu from "./components/menu/Menu";
 import SettingsDialog from "./components/common/SettingsDialog";
 import ReturnToMenu from "./components/common/ReturnToMenu";
 import { useSoundManager } from "./hooks/useSoundManager";

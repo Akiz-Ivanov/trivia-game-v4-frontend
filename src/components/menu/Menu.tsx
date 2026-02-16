@@ -1,19 +1,19 @@
 import Card from "@/components/common/Card";
 import { useState } from "react";
-import SettingsDialog from "./common/SettingsDialog";
-import Attributions from "./game/results/Attributions";
+import SettingsDialog from "@/components/common/SettingsDialog";
+import Attributions from "@/components/game/results/Attributions";
 import useAuth from "@/hooks/useAuth";
-import LogoutAlert from "./auth/LogoutAlert";
-import AuthDialog from "./auth/AuthDialog";
-import MenuCollapsible from "./MenuCollapsible";
-import ToggleSwitch from "./common/ToggleSwitch";
+import LogoutAlert from "@/components/auth/LogoutAlert";
+import AuthDialog from "@/components/auth/AuthDialog";
+import MenuCollapsible from "@/components/menu/MenuCollapsible";
+import ToggleSwitch from "@/components/common/ToggleSwitch";
 import { cn } from "@/lib/utils";
 import { IoConstruct, IoLogInOutline, IoLogOutOutline } from "react-icons/io5";
 import { GiBookmark } from "react-icons/gi";
-import { showToastSuccess } from "./common/ToastWrapper";
-import ThemedIcon from "./ThemedIcon";
+import { showToastSuccess } from "@/components/common/ToastWrapper";
+import ThemedIcon from "@/components/ThemedIcon";
 import ticket1 from "@/assets/svgs/halloween/ticket-1.svg";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useSettingsStore } from "@/store/settingsStore";
 
 type MenuProps = {
@@ -29,10 +29,10 @@ const Menu = ({
   isRadioOn,
   handleQuickPlay,
 }: MenuProps) => {
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openLogout, setOpenLogout] = useState(false);
-  const [openSettings, setOpenSettings] = useState(false);
-  const [openAbout, setOpenAbout] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [shouldAnimateRocket, setShouldAnimateRocket] = useState(false);
 
   const { user, logout } = useAuth();
@@ -47,7 +47,7 @@ const Menu = ({
   const menuButtons = [
     {
       label: "Settings",
-      onClick: () => setOpenSettings(true),
+      onClick: () => setIsSettingsOpen(true),
       icon: (
         <IoConstruct size={20} aria-hidden="true" className="text-yellow-500" />
       ),
@@ -55,7 +55,7 @@ const Menu = ({
     user
       ? {
           label: "Sign out",
-          onClick: () => setOpenLogout(true),
+          onClick: () => setIsLogoutOpen(true),
           icon: (
             <IoLogOutOutline
               size={20}
@@ -66,7 +66,7 @@ const Menu = ({
         }
       : {
           label: "Sign in",
-          onClick: () => setOpenLogin(true),
+          onClick: () => setIsLoginOpen(true),
           icon: (
             <IoLogInOutline
               size={20}
@@ -77,7 +77,7 @@ const Menu = ({
         },
     {
       label: "About",
-      onClick: () => setOpenAbout(true),
+      onClick: () => setIsAboutOpen(true),
       icon: (
         <GiBookmark size={20} aria-hidden="true" className="text-yellow-50" />
       ),
@@ -217,14 +217,14 @@ const Menu = ({
 
       {renderMenuButtons}
 
-      <AuthDialog open={openLogin} onOpenChange={setOpenLogin} />
+      <AuthDialog open={isLoginOpen} onOpenChange={setIsLoginOpen} />
       <LogoutAlert
-        open={openLogout}
-        onOpenChange={setOpenLogout}
+        open={isLogoutOpen}
+        onOpenChange={setIsLogoutOpen}
         onConfirm={onLogoutConfirm}
       />
-      <SettingsDialog open={openSettings} onOpenChange={setOpenSettings} />
-      <Attributions open={openAbout} onOpenChange={setOpenAbout} />
+      <SettingsDialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
+      <Attributions open={isAboutOpen} onOpenChange={setIsAboutOpen} />
     </Card>
   );
 };

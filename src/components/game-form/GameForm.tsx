@@ -1,4 +1,4 @@
-import { randomTitle } from "@/data/data";
+import { randomTitle } from "@/data/formConfig";
 import SelectGroup from "./SelectGroup";
 import Card from "@/components/common/Card";
 import newYear from "@/assets/svgs/new-year.svg";

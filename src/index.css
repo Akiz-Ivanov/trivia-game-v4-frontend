@@ -482,15 +482,11 @@ CUSTOM PROPERTIES
         var(--background),
         color-mix(in oklch, var(--background), white 6%));
     background-repeat: no-repeat;
-    background-size: 150%, cover;
-    background-position: 0% 0%;
+    background-size: 150%;
+    background-position: center;
 
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-
-    background-size: 150%;
-    will-change: background-size, background-position;
-    animation: zoomDrift 150s linear infinite;
   }
 
   main {
@@ -1199,18 +1195,6 @@ CUSTOM PROPERTIES
   }
 }
 
-@keyframes burn {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: -756px 0;
-  }
-
-  /* 54px * 14 = 756px */
-}
-
 /*==============================
   Media Queries
 ===============================*/
@@ -1235,14 +1219,17 @@ CUSTOM PROPERTIES
   }
 }
 
-@keyframes flameFlicker {
-  to {
-    background-position: -700px 0;
+@media (min-width: 769px) {
+  body {
+    background-position: 0% 0%;
+    will-change: background-size, background-position;
+    animation: zoomDrift 150s linear infinite;
   }
 }
 
+
 /*==============================
-  Test
+  New UI Test
 ===============================*/
 
 .purple-bg .fx {
