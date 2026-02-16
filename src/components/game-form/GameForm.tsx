@@ -71,7 +71,7 @@ const GameForm = ({
           onSubmit={onSubmit}
           className="flex flex-col justify-center gap-3 xs:gap-4 px-4 py-4 xs:py-8 rounded-[.5rem] w-full"
         >
-          <h1>{randomTitle}</h1>
+          <h1 className="text-shadow-[1px_1px_80px_#000]">{randomTitle}</h1>
 
           {/* ====== Select Elements ====== */}
           <SelectGroup

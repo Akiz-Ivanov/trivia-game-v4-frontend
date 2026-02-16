@@ -1,0 +1,264 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*==============================
+  IMPORTS
+===============================*/
+/* Fonts */
+@import "@/styles/base/fonts.css";
+
+/* Themes */
+@import "@/styles/themes/theme-base.css";
+@import "@/styles/components/radio-themes.css";
+
+/* Utilities & Components */
+@import "@/styles/components/components.css";
+@import "@/styles/utilities/utilities.css";
+@import "@/styles/utilities/animations.css";
+@import "@/styles/components/radio.css";
+
+@import "@/styles/themes/dark.css";
+@import "@/styles/themes/halloween.css";
+
+/*==============================
+  CUSTOM PROPERTIES
+===============================*/
+@theme inline {
+  --breakpoint-xs: 30rem;
+
+  --text-15-16: clamp(0.9375rem, 0.9155rem + 0.0939vw, 1rem);
+  /** From 0.9375rem at 375px to 1rem at 1440px */
+  --text-15-18: clamp(0.9375rem, 0.8715rem + 0.2817vw, 1.125rem);
+  /** From 0.9375rem at 375px to 1.125rem at 1440px */
+  --text-16-18: clamp(1rem, 0.956rem + 0.1878vw, 1.125rem);
+  /** From 1rem at 375px to 1.125rem at 1440px */
+  --text-18-22: clamp(1.125rem, 1.0282rem + 0.4131vw, 1.4rem);
+  /** From 1.125rem at 375px to 1.4rem at 1440px */
+  --text-20-24: clamp(1.25rem, 1.162rem + 0.3756vw, 1.5rem);
+  /** From 1.25rem at 375px to 1.5rem at 1440px */
+  --text-24-36: clamp(1.5rem, 1.2359rem + 1.1268vw, 2.25rem);
+  /** From 1.5rem at 375px to 2.25rem at 1440px */
+  --text-36-42: clamp(2.25rem, 2.118rem + 0.5634vw, 2.625rem);
+  /** From 2.25rem at 375px to 2.625rem at 1440px */
+
+  --spacing-3-16: clamp(0.2rem, -0.0817rem + 1.2019vw, 1rem);
+  /** From 0.2rem at 375px to 1rem at 1440px */
+  --spacing-16-24: clamp(1rem, -0.7857rem + 7.619vw, 1.5rem);
+  /** From 1rem at 375px to 1.5rem at 480px */
+  --spacing-16-32: clamp(1rem, 0.6479rem + 1.5023vw, 2rem);
+  /** From 1rem at 375px to 2rem at 1440px */
+  --spacing-16-64: clamp(1rem, -1.8626rem + 12.2137vw, 4rem);
+  /** From 1rem at 375px to 4rem at 768px */
+  --spacing-16-128: clamp(1rem, -10.6667rem + 38.8889vw, 8rem);
+  /** From 1rem at 480px to 8rem at 768px */
+  --spacing-24-36: clamp(1.5rem, -0.75rem + 4.6875vw, 2.25rem);
+  /** From 1.5rem at 768px to 2.25rem at 1024px */
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-progressbar: var(--radius-progressbar);
+  --radius-aicard: var(--radius-aicard);
+
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+  --shadow-card-error: var(--shadow-card-error);
+  --shadow-hard: var(--shadow-hard);
+  --shadow-medium: var(--shadow-medium);
+  --shadow-easy: var(--shadow-easy);
+  --shadow-inset:
+    inset 0 4px 10px rgba(0, 0, 0, 0.9),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.8);
+  --shadow-inset-border: var(--shadow-inset-border);
+  --shadow-halloween-inset-border: var(--shadow-halloween-inset-border);
+  --shadow-glow-soft: var(--shadow-glow-soft);
+  --shadow-accent: var(--shadow-accent);
+  --shadow-collapsible-hover: var(--shadow-collapsible-hover);
+
+  /* Radio shadows (can't be used in bg, but useful for box-shadow utilities) */
+  --shadow-radio-glow: 0 0 10px var(--radio-shadow-glow), 0 0 20px var(--radio-shadow-glow-subtle);
+
+  /* Animations */
+  --animate-flicker: flicker 2s infinite;
+  --animate-flyoff: flyoff 1000ms linear forwards;
+  --animate-flyback: flyback 3s ease-out forwards;
+  --animate-dice-spinning: dice-spinning 2.5s infinite ease-in-out;
+
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-error-foreground: var(--error-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-correct: var(--correct-btn);
+  --color-incorrect: var(--incorrect-btn);
+  --color-btn-menu-from: var(--btn-menu-from);
+  --color-btn-menu-to: var(--btn-menu-to);
+  --color-btn-playagain-from: var(--btn-playagain-from);
+  --color-btn-playagain-to: var(--btn-playagain-to);
+
+  /* Radio theme colors */
+  --color-radio-glow: var(--radio-glow);
+  --color-radio-accent: var(--radio-accent);
+  --color-radio-text: var(--radio-text);
+  --color-radio-bg-dark: var(--radio-bg-dark);
+  --color-radio-bg-medium: var(--radio-bg-medium);
+  --color-radio-panel: var(--radio-panel);
+  --color-radio-texture-color: var(--radio-texture-color);
+  --color-radio-texture-color-dark: var(--radio-texture-color-dark);
+  --color-radio-light-middle: var(--radio-light-middle);
+  --color-radio-light-sides: var(--radio-light-sides);
+  --color-radio-screen-tab-bg: var(--radio-screen-tab-bg);
+  --color-radio-screen-tab-active: var(--radio-screen-tab-active);
+}
+
+/*==============================
+  Base
+===============================*/
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  body {
+    @apply flex flex-col items-center justify-center bg-background text-foreground font-medium relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    font-family: 'Poppins', system-ui, sans-serif;
+
+    background-image:
+      url('/src/assets/backgrounds/scribble.svg'),
+      linear-gradient(135deg,
+        var(--background),
+        color-mix(in oklch, var(--background), white 6%));
+    background-repeat: no-repeat;
+    background-size: 150%;
+    background-position: center;
+
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  main {
+    @apply flex flex-col items-center justify-center text-16-18;
+  }
+
+  button,
+  [role="button"] {
+    @apply cursor-pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1 {
+    @apply text-secondary-foreground mb-8 text-center text-36-42 font-bold;
+    text-wrap: balance;
+    -webkit-text-wrap: balance;
+    text-wrap: pretty;
+  }
+
+  form>h2 {
+    @apply text-20-24;
+  }
+
+  h2 {
+    @apply mb-4;
+  }
+
+  a {
+    @apply hover:text-chart-3;
+  }
+
+  strong {
+    @apply text-16-18;
+  }
+
+  /* ====== Scroll bar ====== */
+  /* For Webkit browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--accent), var(--primary));
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+  }
+
+  /* For Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--background);
+  }
+}
+
+/*==============================
+  Media Queries
+===============================*/
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+  }
+
+  body {
+    background-image: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  body {
+    background-position: 0% 0%;
+    will-change: background-size, background-position;
+    animation: zoomDrift 150s linear infinite;
+  }
+}

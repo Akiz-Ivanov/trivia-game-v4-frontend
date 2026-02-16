@@ -1,0 +1,176 @@
+/*==============================
+  HALLOWEEN THEME
+===============================*/
+[data-theme="halloween"] {
+  /* Core colors */
+  --background: oklch(12% 0.02 285);
+  --foreground: oklch(98% 0.01 60);
+
+  --card: oklch(20.5% 0.03 299 / 0.85);
+  --card-foreground: oklch(75% 0.18 25);
+
+  --popover: oklch(18% 0.03 285);
+  --popover-foreground: oklch(95% 0.02 45);
+
+  --primary: oklch(65% 0.20 45);
+  --primary-foreground: oklch(98% 0.005 280);
+
+  --accent: #FF7518;
+  --accent-foreground: oklch(98% 0.01 45);
+
+  --secondary: oklch(83.8% 0.134 152);
+  --secondary-foreground: oklch(15% 0.02 285);
+
+  --muted: oklch(30% 0.02 285);
+  --muted-foreground: oklch(70% 0.05 45);
+
+  --destructive: oklch(68% 0.20 25);
+  --error-foreground: oklch(75% 0.18 25);
+
+  --border: oklch(65% 0.20 45);
+  --input: oklch(55% 0.15 300);
+  --ring: oklch(72.181% 0.13101 277.762 / 0.7);
+
+  --correct-btn: oklch(75% 0.15 150);
+  --incorrect-btn: oklch(72% 0.22 25);
+
+  --chart-1: oklch(65% 0.20 45);
+  --chart-2: oklch(60% 0.18 300);
+  --chart-3: #ff6b00;
+  --chart-4: #ff6b00;
+
+  --btn-menu-from: var(--primary);
+  --btn-menu-to: var(--accent);
+
+  /* shadows */
+  --shadow-card: 0 0 0 calc(4px + 1px) rgba(0, 0, 0, 0.2),
+    0 0 0 0.1rem var(--chart-1) inset;
+  --shadow-card-error: 0 0 0 calc(4px + 1px) rgba(255, 60, 0, 0.1),
+    0 0 0 0.1rem var(--error-foreground) inset;
+  --shadow-hard: 0 0 0 calc(4px + 1px) rgba(255, 60, 0, 0.1),
+    0 0 0 0.1rem var(--error-foreground) inset;
+  --shadow-medium: 0 0 0 calc(4px + 1px) rgba(255, 107, 0, 0.1),
+    0 0 0 0.1rem var(--chart-1) inset;
+  --shadow-easy: 0 0 0 calc(4px + 1px) rgba(100, 255, 100, 0.1),
+    0 0 0 0.1rem var(--chart-3) inset;
+
+  --shadow-halloween-inset-border: 0 0 0 0.1rem oklch(70% 0.2 50) inset;
+  --shadow-glow-soft: 0 0 0.6rem rgba(255, 255, 255, 0.1);
+  --shadow-accent: 0 0 18px oklch(70% 0.22 320);
+  --shadow-collapsible-hover: var(--shadow-halloween-inset-border), var(--shadow-accent);
+
+  /* body background */
+  body {
+    background-image:
+      url('/src/assets/backgrounds/halloween.webp'),
+      linear-gradient(135deg,
+        var(--background),
+        color-mix(in oklch, var(--background), white 6%));
+
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-size: cover;
+    animation: none;
+  }
+
+  /*==============================
+    Typography
+  ===============================*/
+  h1 {
+    @apply font-normal px-4 tracking-wide;
+    font-family: 'Creepster-Regular', 'Poppins', system-ui, sans-serif;
+    background: linear-gradient(90deg,
+        var(--color-error-foreground),
+        var(--color-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: italic;
+  }
+
+  h2 {
+    background: linear-gradient(90deg,
+        var(--color-error-foreground),
+        var(--color-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dialog-title {
+    color: var(--card-foreground)
+  }
+}
+
+/*==============================
+    Form Elements
+===============================*/
+[data-theme="halloween"] select,
+[data-theme="halloween"] .select-trigger {
+  border: 2px solid var(--secondary);
+  background:
+    radial-gradient(circle at 20% 80%,
+      rgba(100, 255, 100, 0.1),
+      transparent 50%),
+    var(--card);
+  box-shadow:
+    0 0 20px rgba(100, 255, 100, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--secondary);
+}
+
+[data-theme="halloween"] .select-content {
+  border: 2px solid var(--secondary);
+  box-shadow:
+    0 0 20px rgba(100, 255, 100, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  color: var(--secondary);
+}
+
+[data-theme="halloween"] select:hover,
+[data-theme="halloween"] .select-trigger:hover {
+  box-shadow:
+    0 0 25px rgba(100, 255, 100, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.halloween-form-submit {
+  background: linear-gradient(135deg, #1a3a3a 0%, #0d1f1f 100%);
+  /* Dark teal fallback */
+  color: var(--primary);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s ease-in-out;
+  font-family: 'Creepster-Regular', 'Poppins', system-ui, sans-serif;
+  letter-spacing: 3px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.halloween-form-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/svgs/halloween/banner.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.5;
+  filter: blur(2px);
+  transition: all 0.4s ease-in-out;
+  z-index: -1;
+}
+
+.halloween-form-submit:hover::before {
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1.1);
+}
+
+.halloween-form-submit:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+}

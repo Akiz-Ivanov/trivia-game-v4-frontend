@@ -1,0 +1,257 @@
+.radio-btn {
+  background:
+    conic-gradient(from 220deg at 50% 50%,
+      #badbf4 0deg,
+      #b7c1c8 80deg,
+      #68869a 100deg,
+      #e5edf4 120deg,
+      #465b6c 240deg,
+      #d9ecf3 360deg),
+    #333;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 5px var(--radio-btn-glow),
+    0 0 8px color-mix(in srgb, var(--radio-btn-glow) 40%, transparent),
+    0 0 10px color-mix(in srgb, var(--radio-btn-glow) 91%, transparent);
+
+  &:hover {
+    box-shadow:
+      0 0 10px var(--radio-btn-glow-hover),
+      0 0 25px color-mix(in srgb, var(--radio-btn-glow-hover) 50%, transparent),
+      0 0 40px color-mix(in srgb, var(--radio-btn-glow-hover) 30%, transparent);
+  }
+
+}
+
+.radio-panel {
+  background: #222;
+  /* base color */
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 3px 3px, 4px 4px;
+  background-position: 0 0, 2px 2px;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.8);
+  border-radius: .75rem;
+}
+
+.radio-btn-svg {
+  color: #fff;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+
+.radio-wood-frame {
+  padding: 6px;
+  border-radius: 1.5rem;
+  /* background-color: #724039; */
+  background-color: var(--radio-texture-color);
+  background: repeating-linear-gradient(135deg,
+      var(--radio-texture-color) 0px,
+      var(--color-radio-texture-color-dark) 2px);
+  position: relative;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    /* subtle top edge highlight */
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    /* bottom inner shadow */
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    /* outer drop shadow */
+    0 -2px 6px rgba(255, 255, 255, 0.15);
+  /* faint top reflection */
+}
+
+.radio-station-name {
+  position: relative;
+  font-size: .875rem;
+  /* text-sm */
+  font-weight: 500;
+  color: black;
+  padding: 0.5rem;
+  height: 2.25rem;
+  margin: 0 0.2rem;
+  border-radius: 1rem;
+  background: var(--radio-station-bg);
+  box-shadow:
+    0 0 10px var(--radio-shadow-glow),
+    0 0 20px var(--radio-shadow-glow-subtle);
+  animation: radio-light-flicker 3s infinite ease-in-out,
+    radio-light-pulse 1.5s infinite alternate;
+}
+
+.radio-station-name::before,
+.radio-station-name::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 1rem;
+  height: 100%;
+  z-index: 2;
+}
+
+.radio-station-name::before {
+  left: 0;
+  background: linear-gradient(to right, var(--radio-glow), transparent);
+}
+
+.radio-station-name::after {
+  right: 0;
+  background: linear-gradient(to left, var(--radio-glow), transparent);
+}
+
+.radio-inner-trim {
+  padding: 4px;
+  border-radius: 1.2rem;
+  background: radial-gradient(circle at 30% 30%, #333, #111);
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.7),
+    inset 0 4px 10px rgba(0, 0, 0, 0.9),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.radio-top-half {
+  /* background: linear-gradient(to bottom, #222, #111); */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.6);
+  border-radius: .75rem;
+}
+
+.border-light {
+  background: radial-gradient(circle at 50% 50%,
+      var(--radio-light-sides) 0%,
+      var(--radio-light-middle) 50%,
+      var(--radio-glow) 100%);
+  box-shadow:
+    0 0 10px var(--radio-shadow-glow),
+    0 0 20px var(--radio-shadow-glow-subtle);
+
+  animation: radio-light-flicker 3s infinite ease-in-out;
+}
+
+.step-scale {
+  --label-w: 3em;
+  --input-h: 2.25em;
+  --thumb-d: var(--input-h);
+  --thumb-r: calc(0.5 * var(--thumb-d));
+  display: grid;
+  grid-row: 1;
+  grid-template-columns: var(--label-w) 1fr var(--label-w);
+  align-items: end;
+  gap: 0.3em;
+  color: #bababa;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: .75rem;
+  width: 100%;
+}
+
+.scale-bar {
+  grid-area: 1 / 2;
+  place-self: end center;
+  width: min(12em, 100%);
+  min-height: 1em;
+  /* background: linear-gradient(90deg, transparent 2px, #f0ba22 0) -1px/1em round; */
+  background: linear-gradient(90deg, transparent 2px, var(--radio-glow) 0) -1px/1em round;
+  clip-path:
+    polygon(0 calc(100% - 1px),
+      0 100%, 100% 100%, 100% 0);
+}
+
+.tuning-dial::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  /* covers only top portion */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+  pointer-events: none;
+  /* let clicks pass through */
+}
+
+.radio-toggle-btn {
+  font-size: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  transition: all 0.15s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* push to top */
+  align-items: center;
+  height: 100%;
+  padding-top: 0.3rem;
+}
+
+.radio-toggle-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  /* covers only top portion */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+  pointer-events: none;
+  /* let clicks pass through */
+}
+
+.radio-toggle-btn.active {
+  /* color: #fff; */
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.6);
+  transform: translateY(2px);
+}
+
+.radio-toggle-btn::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 4px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 50% 50%, var(--radio-light-sides) 0%, var(--radio-light-middle) 50%, var(--radio-glow) 100%);
+  opacity: .2;
+  transition: opacity 0.3s ease;
+  box-shadow:
+    0 -1px 4px var(--radio-shadow-glow-subtle);
+}
+
+/* Light turns on when active */
+.radio-toggle-btn.active::after {
+  opacity: 1;
+}
+
+.drawer {
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.drawer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.radio-utility-btn[aria-pressed="true"] {
+  background: var(--radio-station-bg);
+  box-shadow: var(--shadow-radio-glow);
+  color: black;
+}

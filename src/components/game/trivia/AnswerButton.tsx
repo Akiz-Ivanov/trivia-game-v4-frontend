@@ -63,14 +63,14 @@ const answerButtonVariants = cva(
         theme: "halloween",
         answerState: "correct",
         className:
-          "!bg-correct !border-correct !text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.8)] !shadow-[0_0_30px_rgba(100,255,100,0.6)] before:content-['✓'] before:text-2xl before:opacity-100",
+          "!bg-correct !border-correct !text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.8)] !shadow-[0_0_30px_rgba(100,255,100,0.6)]",
       },
       //* Halloween theme + incorrect
       {
         theme: "halloween",
         answerState: "incorrect",
         className:
-          "!bg-incorrect !border-incorrect !text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.8)] !shadow-[0_0_30px_rgba(255,100,60,0.6)] before:content-['✗'] before:text-2xl before:opacity-100",
+          "!bg-incorrect !border-incorrect !text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.8)] !shadow-[0_0_30px_rgba(255,100,60,0.6)]",
       },
       //* Halloween theme + neutral state
       {

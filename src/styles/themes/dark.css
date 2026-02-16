@@ -1,0 +1,61 @@
+/*==============================
+  Dark THEME
+===============================*/
+.dark {
+  --radius: 0.625rem;
+  --radius-progressbar: .25rem;
+  --radius-aicard: .75rem;
+
+  --background: oklch(16.5% 0.03 282);
+  --foreground: oklch(100.00% 0.000 0);
+
+  --card: rgba(100, 150, 255, 0.1);
+  --card-foreground: oklch(92% 0.02 260);
+
+  --popover: oklch(20% 0.025 282);
+  --popover-foreground: oklch(95% 0.02 280);
+
+  --primary: oklch(62.3% 0.214 259.815);
+  --primary-foreground: oklch(98% 0.005 280);
+
+  --accent: oklch(71.5% 0.143 215.221);
+  --accent-foreground: oklch(95% 0.02 280);
+
+  --secondary: oklch(67% 0.165 250);
+  --secondary-foreground: oklch(79.4% 0.083 223);
+
+  --muted: oklch(35% 0.015 270);
+  --muted-foreground: oklch(92% 0.02 260);
+
+  --destructive: oklch(68.417% 0.15155 19.887);
+  --error-foreground: oklch(71.1% 0.166 22.2);
+
+  --border: oklch(58.9% 0.13 239);
+  --input: oklch(65% 0.18 200);
+  --ring: oklch(82.5% 0.08 260);
+
+  --chart-1: oklch(76.46% 0.151 229.43);
+  --chart-2: oklch(59.87% 0.265 335.87);
+  --chart-3: oklch(69.6% 0.17 162.48);
+  --chart-4: #00f0ff;
+
+  --correct-btn: oklch(63.977% 0.09281 155.827);
+  --incorrect-btn: oklch(64.734% 0.18145 23.642);
+
+  --btn-menu-from: var(--accent);
+  --btn-menu-to: var(--primary);
+  --btn-playagain-from: #6e8efb;
+  --btn-playagain-to: #a777e3;
+
+  --shadow-inset-border: 0 0 0 0.1rem #ffffff44 inset;
+  --shadow-glow-soft: 0 0 0.6rem rgba(255, 255, 255, 0.1);
+  --shadow-accent: 0 0 15px rgba(0, 195, 255, 0.4);
+  --shadow-collapsible-hover: var(--shadow-inset-border), var(--shadow-accent);
+
+  --shadow-card: 0 0 0 calc(4px + 1px) rgba(255, 255, 255, 0.06), 0 0 0 0.1rem var(--chart-1) inset;
+  --shadow-card-error: 0 0 0 calc(4px + 1px) rgba(255, 255, 255, 0.06),
+    0 0 0 0.1rem var(--color-error-foreground) inset;
+  --shadow-hard: 0 0 0 calc(4px + 1px) rgba(255, 255, 255, 0.06), 0 0 0 0.1rem var(--color-error-foreground) inset;
+  --shadow-medium: 0 0 0 calc(4px + 1px) rgba(255, 255, 255, 0.06), 0 0 0 0.1rem var(--chart-1) inset;
+  --shadow-easy: 0 0 0 calc(4px + 1px) rgba(255, 255, 255, 0.06), 0 0 0 0.1rem var(--chart-3) inset;
+}

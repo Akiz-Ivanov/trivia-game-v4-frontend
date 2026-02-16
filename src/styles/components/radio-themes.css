@@ -1,0 +1,47 @@
+/*==============================
+  RADIO WIDGET THEMES
+===============================*/
+[data-radio-theme="retro"] {
+  --radio-glow: #e8a948;
+  --radio-accent: #f2cc5b;
+  --radio-text: #f1dab7;
+  --radio-bg-dark: #241e21;
+  --radio-bg-medium: #2b2427;
+  --radio-panel: #3b2e26;
+  --radio-texture-color: #bd6a4f;
+  --radio-texture-color-dark: #724039;
+  --radio-light-sides: #ffe680;
+  --radio-light-middle: #ffca3a;
+  --radio-btn-glow: rgb(255, 140, 0);
+  --radio-btn-glow-hover: rgba(255, 160, 0, 0.7);
+  --radio-shadow-glow: rgba(255, 200, 50, 0.8);
+  --radio-shadow-glow-subtle: rgba(255, 200, 50, 0.5);
+  --radio-texture: url('/src/assets/svgs/Wood.jpg');
+  --radio-station-bg: radial-gradient(circle at 50% 50%, var(--radio-light-sides) 0%, var(--radio-light-middle) 50%, var(--radio-glow) 100%);
+  --radio-screen-tab-bg: #74330a;
+  --radio-screen-tab-active: #973c00;
+}
+
+[data-radio-theme="futuristic"] {
+  --radio-glow: #00bfe0;
+  --radio-accent: #38bdf8;
+  --radio-text: #e0f2fe;
+  --radio-bg-dark: #0f172a;
+  --radio-bg-medium: #1e293b;
+  --radio-panel: #0f172a;
+  --radio-texture-color: #64748b;
+  --radio-texture-color-dark: #334155;
+  --radio-texture: url('/src/assets/svgs/Metal.jpg');
+  --radio-light-sides: #00faff;
+  --radio-light-middle: #008cff;
+  --radio-btn-glow: #38bdf8;
+  --radio-btn-glow-hover: rgba(56, 189, 248, 0.7);
+  --radio-tab-bg: #1e3a8a;
+  --radio-tab-active: #2563eb;
+  --radio-shadow-glow: rgba(56, 189, 248, 0.8);
+  --radio-shadow-glow-subtle: rgba(56, 189, 248, 0.4);
+  --radio-station-bg: radial-gradient(circle at 50% 50%,
+      var(--radio-light-sides) 0%,
+      var(--radio-glow) 40%),
+    var(--radio-light-middle) 100%;
+}

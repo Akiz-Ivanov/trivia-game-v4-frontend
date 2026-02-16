@@ -1,0 +1,229 @@
+/**====== BackgroundPattern animation ======**/
+@keyframes zoomDrift {
+  0% {
+    background-position: 0% 0%;
+    background-size: 150%;
+  }
+
+  50% {
+    background-size: 152%;
+  }
+
+  100% {
+    background-position: 100% 100%;
+    background-size: 150%;
+  }
+}
+
+/**====== GameForm Start Game Btn ======*/
+@keyframes flicker {
+
+  0%,
+  100% {
+    box-shadow: 0 0 6px oklch(72.531% 0.11656 238.701), 0 0 12px oklch(72.531% 0.11656 238.701);
+  }
+
+  50% {
+    box-shadow: 0 0 2px oklch(72.531% 0.11656 238.701), 0 0 4px oklch(72.531% 0.11656 238.701);
+  }
+}
+
+/**====== Loading Dice Logo ======*/
+@keyframes dice-spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  75% {
+    transform: rotate(270deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/**====== 50/50 Btn Color Animation ======*/
+@keyframes gradientRotate {
+  0% {
+    --gradientAngle: 45deg;
+  }
+
+  100% {
+    --gradientAngle: 405deg;
+  }
+}
+
+/**====== Menu Rocket icon animations ======*/
+@keyframes flyoff {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+
+  15% {
+    transform: translate(60%, -100%) rotate(-5deg) scale(1);
+  }
+
+  30% {
+    transform: translate(140%, -220%) rotate(-12deg) scale(1.01);
+  }
+
+  45% {
+    transform: translate(220%, -340%) rotate(-18deg) scale(1.03);
+  }
+
+  60% {
+    transform: translate(280%, -450%) rotate(-25deg) scale(1.06);
+  }
+
+  75% {
+    transform: translate(320%, -580%) rotate(-32deg) scale(1.08);
+  }
+
+  90% {
+    transform: translate(345%, -750%) rotate(-38deg) scale(1.1);
+  }
+
+  100% {
+    transform: translate(350%, -900%) rotate(-42deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes flyback {
+  0% {
+    transform: translate(-150%, -150%) rotate(45deg);
+    opacity: 0;
+  }
+
+  10% {
+    transform: translate(0, 0) rotate(45deg);
+    opacity: 1;
+  }
+
+  10.1% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 1;
+  }
+
+  60% {
+    transform: translate(1400%, 0%) rotate(45deg);
+    opacity: 0;
+  }
+
+  80% {
+    transform: translate(-150%, 0%) rotate(45deg);
+    opacity: 0;
+  }
+
+  90% {
+    transform: translate(0, 0) rotate(45deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/**====== Radio Light animations ======*/
+@keyframes radio-light-pulse {
+  0% {
+    box-shadow: 0 0 8px var(--radio-shadow-glow), 0 0 15px var(--radio-shadow-glow-subtle);
+  }
+
+  100% {
+    box-shadow: 0 0 16px var(--radio-shadow-glow), 0 0 30px var(--radio-shadow-glow-subtle);
+  }
+}
+
+@keyframes radio-light-flicker {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: 0.95;
+  }
+
+  48% {
+    opacity: 0.85;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  52% {
+    opacity: 0.87;
+  }
+
+  55% {
+    opacity: 0.95;
+  }
+}
+
+/**====== AI Addon Btn animations ======*/
+@keyframes bubblesAnimation {
+  0% {
+    background-position:
+      10% 95%,
+      15% 95%,
+      15% 95%,
+      20% 95%,
+      30% 95%,
+      30% 95%,
+      45% 95%,
+      65% 95%,
+      75% 95%,
+      10% 95%,
+      15% 95%,
+      15% 95%;
+  }
+
+  70% {
+    background-position:
+      5% 85%,
+      5% 25%,
+      15% 45%,
+      25% 5%,
+      35% 35%,
+      27% 55%,
+      55% 55%,
+      75% 25%,
+      95% 35%,
+      5% 85%,
+      15% 45%;
+  }
+
+  100% {
+    background-position:
+      5% 75%,
+      5% 15%,
+      15% 35%,
+      25% 0%,
+      35% 25%,
+      27% 45%,
+      55% 45%,
+      70% 15%,
+      95% 25%,
+      5% 75%,
+      15% 35%;
+    background-size: 0% 0%;
+  }
+}
