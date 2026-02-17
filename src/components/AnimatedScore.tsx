@@ -1,6 +1,5 @@
-// components/AnimatedScore.tsx
 import { motion, useSpring, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Trophy } from "lucide-react";
 
@@ -10,17 +9,19 @@ type AnimatedScoreProps = {
 };
 
 export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
-  const [displayScore, setDisplayScore] = useState(0);
-
-  // Smooth number animation
-  const spring = useSpring(displayScore, {
+  const spring = useSpring(score, {
     damping: 30,
     stiffness: 200,
   });
 
+  // Transform the raw spring value into a formatted string reactively
+  const displayScore = useTransform(spring, (val) =>
+    Math.round(val).toLocaleString(),
+  );
+
   useEffect(() => {
-    setDisplayScore(score);
-  }, [score]);
+    spring.set(score);
+  }, [score, spring]);
 
   return (
     <motion.div
@@ -32,7 +33,7 @@ export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
         className,
       )}
       animate={{
-        scale: displayScore > 0 ? [1, 1.1, 1] : 1,
+        scale: score > 0 ? [1, 1.1, 1] : 1,
       }}
       transition={{ duration: 0.3 }}
     >
@@ -42,7 +43,7 @@ export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
           Score
         </span>
         <motion.span className="text-lg md:text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-          {Math.round(spring.get()).toLocaleString()}
+          {displayScore}
         </motion.span>
       </div>
     </motion.div>

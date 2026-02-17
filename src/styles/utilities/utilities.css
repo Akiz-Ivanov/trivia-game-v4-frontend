@@ -113,4 +113,8 @@
   .purple-bg.animating .bottom {
     transform: scale(-1) translateY(-185%) translateX(60%);
   }
+
+  .stripped-blue {
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.1) 35px, rgba(255, 255, 255, 0.1) 70px)
+  }
 }
