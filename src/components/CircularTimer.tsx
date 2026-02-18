@@ -112,13 +112,14 @@ export const CircularTimer = ({
         <motion.span
           key={timeLeft}
           className={cn(
-            "text-2xl font-bold text-accent",
+            "text-2xl font-bold text-accent tabular-nums",
             timeLeft <= 10 && "text-orange-400",
             timeLeft <= 5 && "text-error-foreground",
           )}
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.2 }}
+          style={{ fontSize: `${size * 0.45}px` }}
         >
           {timeLeft}
         </motion.span>

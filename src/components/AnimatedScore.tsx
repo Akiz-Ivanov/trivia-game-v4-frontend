@@ -1,5 +1,10 @@
-import { motion, useSpring, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import {
+  motion,
+  useSpring,
+  useTransform,
+  useAnimationControls,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Trophy } from "lucide-react";
 
@@ -9,40 +14,52 @@ type AnimatedScoreProps = {
 };
 
 export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
-  const spring = useSpring(score, {
-    damping: 30,
-    stiffness: 200,
-  });
-
-  // Transform the raw spring value into a formatted string reactively
+  const spring = useSpring(score, { damping: 30, stiffness: 200 });
   const displayScore = useTransform(spring, (val) =>
     Math.round(val).toLocaleString(),
   );
 
+  const prevScore = useRef(score);
+  const controls = useAnimationControls();
+
   useEffect(() => {
     spring.set(score);
-  }, [score, spring]);
+
+    //* Only animate when score increases
+    if (score > prevScore.current) {
+      controls.start({
+        scale: [1, 1.15, 1],
+        transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
+      });
+    }
+
+    prevScore.current = score;
+  }, [score, spring, controls]);
 
   return (
     <motion.div
+      animate={controls}
       className={cn(
-        "px-2 py-1.5 rounded-full",
-        "bg-gradient-to-r from-purple-500/20 to-pink-500/20",
-        "backdrop-blur-md border-2 border-white/20",
-        "shadow-lg scale-80 md:scale-100",
+        "rounded-s-none rounded-e-full xs:rounded-full score-time-container",
+        "py-1 px-3 xs:py-1.5 xs:px-3.5",
         className,
       )}
-      animate={{
-        scale: score > 0 ? [1, 1.1, 1] : 1,
-      }}
-      transition={{ duration: 0.3 }}
     >
-      <div className="flex items-center gap-1.5 md:gap-2 min-w-16 justify-between px-2">
+      <div className="flex items-center gap-1.5 md:gap-2 min-w-16 justify-between">
         <Trophy className="w-4 h-4 text-yellow-400 md:hidden" />
-        <span className="text-sm text-white/70 font-semibold hidden md:inline-flex">
+        <span
+          className="text-sm font-semibold hidden md:inline-flex"
+          style={{ color: "color-mix(in oklch, var(--accent) 90%, white 10%)" }}
+        >
           Score
         </span>
-        <motion.span className="text-lg md:text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+        <motion.span
+          className="text-lg md:text-xl font-black tabular-nums"
+          style={{
+            color: "var(--foreground)",
+            textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+          }}
+        >
           {displayScore}
         </motion.span>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, BarChart2, Eye, EyeOff, Timer } from "lucide-react";
+import { ArrowRight, BarChart2, Clock, Eye, EyeOff, Timer } from "lucide-react";
 import { getPreloadedCategoryBg } from "@/assets/imports.ts";
 import insertSoftHyphens from "@/utils/insertSoftHyphens.js";
 import GameMeta from "./GameMeta.js";
@@ -8,7 +8,6 @@ import TriviaAddons from "./trivia-addons/TriviaAddons.js";
 import Card from "@/components/common/Card.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button.js";
-
 import type { TriviaQuestion } from "@/types/trivia-db.types.js";
 import type { Category } from "@/types/imports.types.js";
 import AnswerButton from "./AnswerButton.js";
@@ -18,6 +17,7 @@ import ComboMeter from "@/components/ComboMeter.js";
 import { AnimatedScore } from "@/components/AnimatedScore.js";
 import { useQuizLogic } from "@/hooks/useQuizLogic.js";
 import { useSettingsStore } from "@/store/settingsStore.js";
+import { formatTime } from "@/utils/formatTime.js";
 
 type QuizCardProps = {
   questionData: TriviaQuestion;
@@ -122,7 +122,7 @@ const QuizCard = ({
         key={questionData.id}
         asMotion={true}
         className={cn(
-          "game-card gap-3-16 text-15-18 px-16-64 py-8 sm:px-8 md:p-24-36 lg:p-9 relative",
+          "game-card gap-3-16 text-15-18 sm:px-8 relative",
           "before:content-[''] before:absolute before:inset-0 before:bg-[oklch(0%_0_none_/_0.3)] before:-z-10 xs:before:rounded-xl",
           {
             "xs:shadow-hard": questionData.difficulty === "hard",
@@ -262,7 +262,7 @@ const QuizCard = ({
           />
         )}
 
-        <div className="w-full flex justify-between items-center relative">
+        <div className="hidden xs:flex w-full justify-between items-center relative">
           <AnimatedScore score={totalScore} />
 
           <div className="absolute left-1/2 -translate-x-1/2">
@@ -277,9 +277,29 @@ const QuizCard = ({
               <CircularTimer
                 timeLeft={timeLeft}
                 totalTime={totalTime}
-                size={42}
+                size={46}
                 strokeWidth={4}
               />
+            </div>
+          )}
+        </div>
+
+        <div className="flex xs:hidden w-screen justify-between items-center relative px-safe">
+          <AnimatedScore score={totalScore} />
+
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+            <ComboMeter
+              currentStreak={currentStreak}
+              isHalloween={isHalloween}
+            />
+          </div>
+
+          {isTimerEnabled && (
+            <div className="rounded-s-full rounded-e-none score-time-container py-1 px-3 min-w-16 flex items-center gap-1">
+              <span className="font-bold text-lg tabular-nums">
+                {formatTime(timeLeft)}
+              </span>
+              <Clock className="size-4" />
             </div>
           )}
         </div>
