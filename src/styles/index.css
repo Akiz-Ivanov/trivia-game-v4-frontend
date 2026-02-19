@@ -78,7 +78,6 @@
   --shadow-accent: var(--shadow-accent);
   --shadow-collapsible-hover: var(--shadow-collapsible-hover);
 
-  /* Radio shadows (can't be used in bg, but useful for box-shadow utilities) */
   --shadow-radio-glow: 0 0 10px var(--radio-shadow-glow), 0 0 20px var(--radio-shadow-glow-subtle);
 
   /* Animations */
@@ -150,7 +149,7 @@
   }
 
   body {
-    @apply flex flex-col items-center justify-center bg-background text-foreground font-medium relative;
+    @apply flex flex-col items-center justify-start xs:justify-center bg-background text-foreground font-medium relative;
     min-height: 100vh;
     min-height: 100dvh;
 
@@ -170,7 +169,7 @@
   }
 
   main {
-    @apply flex flex-col items-center justify-center text-16-18;
+    @apply flex flex-col items-center justify-start md:justify-center text-16-18;
   }
 
   button,

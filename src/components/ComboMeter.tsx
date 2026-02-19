@@ -58,7 +58,7 @@ const ComboMeter = ({ currentStreak, isHalloween }: ComboMeterProps) => {
     <div
       className={cn(
         "relative inline-flex rounded-full border-2 border-white/30 overflow-hidden",
-        "h-8 md:h-10",
+        "h-9 md:h-10",
         currentStreak === 1 && "shadow-[0px_0px_7px_rgba(0,155,255,0.5)]",
         currentStreak === 2 && "shadow-[0px_0px_9px_rgba(0,155,255,0.7)]",
         currentStreak === 3 && "shadow-[0px_0px_10px_rgba(0,155,255,0.9)]",

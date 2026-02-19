@@ -18,6 +18,7 @@ import { AnimatedScore } from "@/components/AnimatedScore.js";
 import { useQuizLogic } from "@/hooks/useQuizLogic.js";
 import { useSettingsStore } from "@/store/settingsStore.js";
 import { formatTime } from "@/utils/formatTime.js";
+import { StickyWrapper } from "@/components/StickyWrapper.js";
 
 type QuizCardProps = {
   questionData: TriviaQuestion;
@@ -122,7 +123,7 @@ const QuizCard = ({
         key={questionData.id}
         asMotion={true}
         className={cn(
-          "game-card gap-3-16 text-15-18 sm:px-8 relative",
+          "gap-3-16 text-15-18 sm:px-8 relative",
           "before:content-[''] before:absolute before:inset-0 before:bg-[oklch(0%_0_none_/_0.3)] before:-z-10 xs:before:rounded-xl",
           {
             "xs:shadow-hard": questionData.difficulty === "hard",
@@ -262,6 +263,7 @@ const QuizCard = ({
           />
         )}
 
+        {/* ====== Desktop Layout HUD ====== */}
         <div className="hidden xs:flex w-full justify-between items-center relative">
           <AnimatedScore score={totalScore} />
 
@@ -284,25 +286,28 @@ const QuizCard = ({
           )}
         </div>
 
-        <div className="flex xs:hidden w-screen justify-between items-center relative px-safe">
-          <AnimatedScore score={totalScore} />
+        {/* ====== Mobile Layout HUD ====== */}
+        <StickyWrapper>
+          <div className="flex xs:hidden w-screen justify-between items-center relative">
+            <AnimatedScore score={totalScore} />
 
-          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
-            <ComboMeter
-              currentStreak={currentStreak}
-              isHalloween={isHalloween}
-            />
-          </div>
-
-          {isTimerEnabled && (
-            <div className="rounded-s-full rounded-e-none score-time-container py-1 px-3 min-w-16 flex items-center gap-1">
-              <span className="font-bold text-lg tabular-nums">
-                {formatTime(timeLeft)}
-              </span>
-              <Clock className="size-4" />
+            <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+              <ComboMeter
+                currentStreak={currentStreak}
+                isHalloween={isHalloween}
+              />
             </div>
-          )}
-        </div>
+
+            {isTimerEnabled && (
+              <div className="rounded-s-full rounded-e-none score-time-container py-1 px-3 min-w-16 flex items-center gap-1">
+                <span className="font-bold text-lg tabular-nums">
+                  {formatTime(timeLeft)}
+                </span>
+                <Clock className="size-4" />
+              </div>
+            )}
+          </div>
+        </StickyWrapper>
 
         {/* ====== Question ====== */}
         <h2

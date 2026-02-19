@@ -166,7 +166,8 @@ function App(): React.JSX.Element {
           />
         </div>
       )}
-      <main className="w-full h-fit xs:px-16-128 sm:px-8 xs:py-8 overflow-x-hidden">
+
+      <main className="w-full h-fit xs:px-16-128 sm:px-8 xs:py-8 overflow-x-clip">
         <div className="flex flex-col items-center justify-center w-full max-w-[30rem] xs:max-w-[42rem]">
           <Toaster position="bottom-center" />
           {screen === "game" || screen === "form" ? (
