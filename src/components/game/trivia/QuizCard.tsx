@@ -19,6 +19,7 @@ import { useQuizLogic } from "@/hooks/useQuizLogic.js";
 import { useSettingsStore } from "@/store/settingsStore.js";
 import { formatTime } from "@/utils/formatTime.js";
 import { StickyWrapper } from "@/components/StickyWrapper.js";
+import { useMediaQuery } from "@/hooks/useMediaQuery.js";
 
 type QuizCardProps = {
   questionData: TriviaQuestion;
@@ -104,7 +105,7 @@ const QuizCard = ({
 
   const isCorrect = selectedAnswer === questionData.correct_answer;
   const difficultyShadow = `var(--shadow-${questionData.difficulty})`;
-  const isXs = window.matchMedia("(min-width: 480px)").matches;
+  const isXs = useMediaQuery("(min-width: 480px)");
 
   return (
     <div className="relative w-full">
@@ -322,7 +323,7 @@ const QuizCard = ({
           role="list"
           aria-labelledby={`question-${questionData.id}`}
           aria-describedby="answer-instruction"
-          className="btn-wrapper grid sm:grid-cols-2 gap-6 w-full xs:my-2 sm:my-3 relative"
+          className="btn-wrapper grid sm:grid-cols-2 gap-3 xs:gap-6 w-full xs:my-2 sm:my-3 relative"
           onKeyDown={(e) => {
             if (e.key === "ArrowDown" || e.key === "ArrowRight") {
               e.preventDefault();

@@ -28,33 +28,6 @@
 @theme inline {
   --breakpoint-xs: 30rem;
 
-  --text-15-16: clamp(0.9375rem, 0.9155rem + 0.0939vw, 1rem);
-  /** From 0.9375rem at 375px to 1rem at 1440px */
-  --text-15-18: clamp(0.9375rem, 0.8715rem + 0.2817vw, 1.125rem);
-  /** From 0.9375rem at 375px to 1.125rem at 1440px */
-  --text-16-18: clamp(1rem, 0.956rem + 0.1878vw, 1.125rem);
-  /** From 1rem at 375px to 1.125rem at 1440px */
-  --text-18-22: clamp(1.125rem, 1.0282rem + 0.4131vw, 1.4rem);
-  /** From 1.125rem at 375px to 1.4rem at 1440px */
-  --text-20-24: clamp(1.25rem, 1.162rem + 0.3756vw, 1.5rem);
-  /** From 1.25rem at 375px to 1.5rem at 1440px */
-  --text-24-36: clamp(1.5rem, 1.2359rem + 1.1268vw, 2.25rem);
-  /** From 1.5rem at 375px to 2.25rem at 1440px */
-  --text-36-42: clamp(2.25rem, 2.118rem + 0.5634vw, 2.625rem);
-  /** From 2.25rem at 375px to 2.625rem at 1440px */
-
-  --spacing-3-16: clamp(0.2rem, -0.0817rem + 1.2019vw, 1rem);
-  /** From 0.2rem at 375px to 1rem at 1440px */
-  --spacing-16-24: clamp(1rem, -0.7857rem + 7.619vw, 1.5rem);
-  /** From 1rem at 375px to 1.5rem at 480px */
-  --spacing-16-32: clamp(1rem, 0.6479rem + 1.5023vw, 2rem);
-  /** From 1rem at 375px to 2rem at 1440px */
-  --spacing-16-64: clamp(1rem, -1.8626rem + 12.2137vw, 4rem);
-  /** From 1rem at 375px to 4rem at 768px */
-  --spacing-16-128: clamp(1rem, -10.6667rem + 38.8889vw, 8rem);
-  /** From 1rem at 480px to 8rem at 768px */
-  --spacing-24-36: clamp(1.5rem, -0.75rem + 4.6875vw, 2.25rem);
-  /** From 1.5rem at 768px to 2.25rem at 1024px */
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -118,6 +91,7 @@
   --color-btn-playagain-from: var(--btn-playagain-from);
   --color-btn-playagain-to: var(--btn-playagain-to);
 
+
   /* Radio theme colors */
   --color-radio-glow: var(--radio-glow);
   --color-radio-accent: var(--radio-accent);
@@ -131,6 +105,36 @@
   --color-radio-light-sides: var(--radio-light-sides);
   --color-radio-screen-tab-bg: var(--radio-screen-tab-bg);
   --color-radio-screen-tab-active: var(--radio-screen-tab-active);
+
+  /* Text sizes */
+  --text-15-16: clamp(0.9375rem, 0.9155rem + 0.0939vw, 1rem);
+  /** From 0.9375rem at 375px to 1rem at 1440px */
+  --text-15-18: clamp(0.9375rem, 0.8715rem + 0.2817vw, 1.125rem);
+  /** From 0.9375rem at 375px to 1.125rem at 1440px */
+  --text-16-18: clamp(1rem, 0.956rem + 0.1878vw, 1.125rem);
+  /** From 1rem at 375px to 1.125rem at 1440px */
+  --text-18-22: clamp(1.125rem, 1.0282rem + 0.4131vw, 1.4rem);
+  /** From 1.125rem at 375px to 1.4rem at 1440px */
+  --text-20-24: clamp(1.25rem, 1.162rem + 0.3756vw, 1.5rem);
+  /** From 1.25rem at 375px to 1.5rem at 1440px */
+  --text-24-36: clamp(1.5rem, 1.2359rem + 1.1268vw, 2.25rem);
+  /** From 1.5rem at 375px to 2.25rem at 1440px */
+  --text-36-42: clamp(2.25rem, 2.118rem + 0.5634vw, 2.625rem);
+  /** From 2.25rem at 375px to 2.625rem at 1440px */
+
+  /* Spacing */
+  --spacing-3-16: clamp(0.2rem, -0.0817rem + 1.2019vw, 1rem);
+  /** From 0.2rem at 375px to 1rem at 1440px */
+  --spacing-16-24: clamp(1rem, -0.7857rem + 7.619vw, 1.5rem);
+  /** From 1rem at 375px to 1.5rem at 480px */
+  --spacing-16-32: clamp(1rem, 0.6479rem + 1.5023vw, 2rem);
+  /** From 1rem at 375px to 2rem at 1440px */
+  --spacing-16-64: clamp(1rem, -1.8626rem + 12.2137vw, 4rem);
+  /** From 1rem at 375px to 4rem at 768px */
+  --spacing-16-128: clamp(1rem, -10.6667rem + 38.8889vw, 8rem);
+  /** From 1rem at 480px to 8rem at 768px */
+  --spacing-24-36: clamp(1.5rem, -0.75rem + 4.6875vw, 2.25rem);
+  /** From 1.5rem at 768px to 2.25rem at 1024px */
 }
 
 /*==============================
@@ -149,7 +153,7 @@
   }
 
   body {
-    @apply flex flex-col items-center justify-start xs:justify-center bg-background text-foreground font-medium relative;
+    @apply flex flex-col items-center justify-center bg-background text-foreground font-medium relative;
     min-height: 100vh;
     min-height: 100dvh;
 
@@ -169,7 +173,7 @@
   }
 
   main {
-    @apply flex flex-col items-center justify-start md:justify-center text-16-18;
+    @apply flex flex-col items-center justify-center text-16-18;
   }
 
   button,

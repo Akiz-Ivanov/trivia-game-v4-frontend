@@ -131,7 +131,7 @@
   }
 
   .sticky-container {
-    background-color: #093450;
+    background: var(--sticky-bg);
     backdrop-filter: blur(12px);
     box-shadow: 0 2px 16px rgba(25, 120, 200, 0.3);
   }

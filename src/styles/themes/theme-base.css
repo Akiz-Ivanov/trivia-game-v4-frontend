@@ -27,6 +27,8 @@
   --muted: oklch(35% 0.015 270);
   --muted-foreground: oklch(92% 0.02 260);
 
+  --sticky-bg: #093450;
+
   --destructive: oklch(68.417% 0.15155 19.887);
   --error-foreground: oklch(71.1% 0.166 22.2);
 
