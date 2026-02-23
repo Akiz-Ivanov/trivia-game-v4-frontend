@@ -158,18 +158,6 @@
     min-height: 100dvh;
 
     font-family: 'Poppins', system-ui, sans-serif;
-
-    background-image:
-      url('/src/assets/backgrounds/scribble.svg'),
-      linear-gradient(135deg,
-        var(--background),
-        color-mix(in oklch, var(--background), white 6%));
-    background-repeat: no-repeat;
-    background-size: 150%;
-    background-position: center;
-
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
   }
 
   main {
@@ -263,5 +251,15 @@
     background-position: 0% 0%;
     will-change: background-size, background-position;
     animation: zoomDrift 150s linear infinite;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-image:
+      url('/src/assets/backgrounds/scribble.svg'),
+      linear-gradient(135deg,
+        var(--background),
+        color-mix(in oklch, var(--background), white 6%));
+    background-repeat: no-repeat;
+    background-size: 150%;
+    background-position: center;
   }
 }
