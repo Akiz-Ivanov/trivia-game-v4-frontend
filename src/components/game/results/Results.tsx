@@ -8,6 +8,7 @@ import Attributions from "./Attributions";
 import success from "@/assets/svgs/breaking-barriers-bro.svg";
 import { Button } from "@/components/ui/button";
 import { useSettingsStore } from "@/store/settingsStore";
+import { useGameStats } from "@/hooks/useGameStats";
 // import okay from "@/assets/svgs/andalusian-fair.svg"
 
 type ResultsProps = {
@@ -16,14 +17,14 @@ type ResultsProps = {
   resetGame: () => void;
 };
 
-const Results = ({
-  correctCount,
-  numOfQuestions,
-  resetGame,
-}: ResultsProps): React.JSX.Element => {
+const Results = ({ resetGame }: ResultsProps): React.JSX.Element => {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
-  const correctPercentage: number = (correctCount / numOfQuestions) * 100;
+  const stats = useGameStats();
+  const gameStats = stats.getGameStats();
+
+  const correctPercentage: number =
+    (gameStats.correctCount / gameStats.totalQuestions) * 100;
 
   const backgroundGlow = useSettingsStore((state) => state.backgroundGlow);
   const illustrations = useSettingsStore((state) => state.illustrations);
@@ -55,8 +56,8 @@ const Results = ({
       )}
     >
       <p aria-live="polite" className="sr-only">
-        You answered {correctCount} out of {numOfQuestions} questions correctly.
-        That's {correctPercentage.toFixed(0)}%. {message}
+        You answered {gameStats.correctCount} out of {gameStats.totalQuestions}{" "}
+        questions correctly. That's {correctPercentage.toFixed(0)}%. {message}
       </p>
       {illustrations && (
         <div className="img-wrapper min-w-[min(18.75rem,80vw)] min-h-[min(18.75rem,80vw)] relative">
@@ -77,7 +78,8 @@ const Results = ({
         </div>
       )}
       <h2>
-        Correct answers: {correctCount} out of {numOfQuestions}.
+        Correct answers: {gameStats.correctCount} out of{" "}
+        {gameStats.totalQuestions}.
       </h2>
       <p>Percentage: {correctPercentage.toFixed(2)}%</p>
       <p style={{ color: messageStyle }}>{message}</p>

@@ -1,67 +1,65 @@
-import { useState } from "react"
-import loginService from "@/services/loginService"
-import useAuth from "@/hooks/useAuth"
-import { TriangleAlert, Eye, EyeOff, KeyRound, User2, LogIn } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { showToastSuccess } from "../common/ToastWrapper"
+import { useState } from "react";
+import loginService from "@/services/loginService";
+import useAuth from "@/hooks/useAuth";
+import {
+  TriangleAlert,
+  Eye,
+  EyeOff,
+  KeyRound,
+  User2,
+  LogIn,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { showToastSuccess } from "../common/ToastWrapper";
 
-import type { User } from "@/types/auth.types"
-import type { AuthMode } from "@/components/auth/AuthDialog"
-import { Button } from "../ui/button"
+import type { User } from "@/types/auth";
+import type { AuthMode } from "@/components/auth/AuthDialog";
+import { Button } from "../ui/button";
 
 type LoginFormProps = {
-  onClose: () => void
-  onSwitch: (m: AuthMode) => void
-}
+  onClose: () => void;
+  onSwitch: (m: AuthMode) => void;
+};
 
-const LoginForm = ({
-  onClose,
-  onSwitch
-}: LoginFormProps) => {
+const LoginForm = ({ onClose, onSwitch }: LoginFormProps) => {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [login, setLogin] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [showPassword, setShowPassword] = useState<boolean>(false)
-
-  const { setUser } = useAuth()
+  const { setUser } = useAuth();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!login.trim() || !password.trim()) {
-      setError("Both fields are required")
-      return
+      setError("Both fields are required");
+      return;
     }
 
     try {
       const user: Exclude<User, null> = await loginService.login({
-        login, password
-      })
+        login,
+        password,
+      });
 
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
 
-      setUser(user)
-      setLogin("")
-      setPassword("")
-      onClose()
-      showToastSuccess(`Welcome back, ${user.username || user.email}!`)
-      setError(null)
+      setUser(user);
+      setLogin("");
+      setPassword("");
+      onClose();
+      showToastSuccess(`Welcome back, ${user.username || user.email}!`);
+      setError(null);
     } catch (err) {
-      if (err instanceof Error) setError(err.message)
+      if (err instanceof Error) setError(err.message);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleLogin} className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="login"
-        >
-          Username or Email
-        </label>
+        <label htmlFor="login">Username or Email</label>
 
         <div className="relative group">
           <User2 className="absolute left-2.5 top-1/2 -translate-y-1/2 text-chart-3 w-4 h-4 pointer-events-none group-focus-within:text-chart-2" />
@@ -71,20 +69,15 @@ const LoginForm = ({
             placeholder="example@gmail.com/John123"
             value={login}
             onChange={({ target }) => {
-              setLogin(target.value)
-              if (error) setError(null)
+              setLogin(target.value);
+              if (error) setError(null);
             }}
             className="placeholder:italic placeholder:text-gray-600 py-5 border-border border-2 rounded-sm w-full pl-8"
           />
         </div>
-
       </div>
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="password"
-        >
-          Password
-        </label>
+        <label htmlFor="password">Password</label>
 
         <div className="relative w-full group">
           <KeyRound className="absolute left-2.5 top-1/2 -translate-y-1/2 text-chart-3 w-4 h-4 pointer-events-none group-focus-within:text-chart-2" />
@@ -93,8 +86,8 @@ const LoginForm = ({
             placeholder="Password123"
             value={password}
             onChange={({ target }) => {
-              setPassword(target.value)
-              if (error) setError(null)
+              setPassword(target.value);
+              if (error) setError(null);
             }}
             className="placeholder:text-gray-600 placeholder:italic py-5 border-border border-2 rounded-sm pl-8 pr-10 w-full"
           />
@@ -111,7 +104,10 @@ const LoginForm = ({
       <div className="flex flex-col gap-2">
         {error && (
           <p className="text-destructive text-sm text-center flex justify-center items-center gap-1">
-            <TriangleAlert className="size-4" /> {error === "Invalid login credentials" ? "Oops! That login didn’t work. Please check your details." : error}
+            <TriangleAlert className="size-4" />{" "}
+            {error === "Invalid login credentials"
+              ? "Oops! That login didn’t work. Please check your details."
+              : error}
           </p>
         )}
 
@@ -126,7 +122,7 @@ const LoginForm = ({
                     focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
                     ${error ? " ring-2 ring-destructive ring-offset-2 ring-offset-background" : ""}`}
         >
-          Login 
+          Login
           <LogIn size={20} />
         </Button>
       </div>
@@ -142,7 +138,7 @@ const LoginForm = ({
         </button>
       </p>
     </form>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

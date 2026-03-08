@@ -5,7 +5,7 @@ import newYear from "@/assets/svgs/new-year.svg";
 import cherryBlossom from "@/assets/svgs/cherry-blossom.svg";
 import halloweenGate from "@/assets/svgs/halloween/halloween-gate.svg";
 
-import type { GameFormProps } from "../../types/game-form.types";
+import type { GameFormProps } from "../../types/game-form";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import ToggleSwitch from "../common/ToggleSwitch";

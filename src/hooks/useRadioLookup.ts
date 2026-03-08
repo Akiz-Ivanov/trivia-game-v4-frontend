@@ -1,58 +1,58 @@
-import { useEffect, useMemo, useState } from "react"
-import Fuse from "fuse.js"
-import { getCountries, getTags } from "@/services/radioLookupService"
-import type { LookupItem } from "@/services/radioLookupService"
-import type { Mode } from "@/types/radio.types"
+import { useEffect, useMemo, useState } from "react";
+import Fuse from "fuse.js";
+import { getCountries, getTags } from "@/services/radioLookupService";
+import type { LookupItem } from "@/services/radioLookupService";
+import type { Mode } from "@/types/radio";
 
 export function useRadioLookup(mode: Mode, query: string) {
-  const [items, setItems] = useState<LookupItem[]>([])
-  const [loading, setLoading] = useState(false)
+  const [items, setItems] = useState<LookupItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   //*====== Fetch initial data ======
   useEffect(() => {
-    setItems([])
-    setLoading(true)
+    setItems([]);
+    setLoading(true);
 
     const fetchData = async () => {
       try {
-        let data: LookupItem[] = []
+        let data: LookupItem[] = [];
 
         switch (mode) {
           case "country":
-            data = await getCountries()
-            break
+            data = await getCountries();
+            break;
           case "tag":
-            data = await getTags(100)
-            break
+            data = await getTags(100);
+            break;
           //* Future-proof: add more cases here
           default:
-            data = []
-            break
+            data = [];
+            break;
         }
 
-        setItems(data)
+        setItems(data);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [mode])
+    fetchData();
+  }, [mode]);
 
   //*====== Debounced API fetch for tag search filter ======
   useEffect(() => {
-    if (mode !== "tag") return
-    setLoading(true)
+    if (mode !== "tag") return;
+    setLoading(true);
     const handler = setTimeout(() => {
       getTags(100, query)
         .then(setItems)
         .catch(console.error)
-        .finally(() => setLoading(false))
-    }, 400)
-    return () => clearTimeout(handler)
-  }, [mode, query])
+        .finally(() => setLoading(false));
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [mode, query]);
 
   //*====== Fuse for fuzzy search ======
   const fuse = useMemo(
@@ -61,26 +61,26 @@ export function useRadioLookup(mode: Mode, query: string) {
         keys: ["name"],
         threshold: 0.3,
       }),
-    [items]
-  )
+    [items],
+  );
 
   const filteredItems = useMemo(() => {
-    if (!query.trim()) return items
+    if (!query.trim()) return items;
 
-    const results = fuse.search(query).map(r => r.item)
+    const results = fuse.search(query).map((r) => r.item);
 
     const exactMatches = results
-      .filter(item => item.name.toLowerCase() === query.toLowerCase())
-      .sort((a, b) => b.stationcount - a.stationcount)
+      .filter((item) => item.name.toLowerCase() === query.toLowerCase())
+      .sort((a, b) => b.stationcount - a.stationcount);
 
     const fuzzyMatches = results
-      .filter(item => item.name.toLowerCase() !== query.toLowerCase())
-      .sort((a, b) => b.stationcount - a.stationcount)
+      .filter((item) => item.name.toLowerCase() !== query.toLowerCase())
+      .sort((a, b) => b.stationcount - a.stationcount);
 
-    const combined = [...exactMatches, ...fuzzyMatches]
+    const combined = [...exactMatches, ...fuzzyMatches];
 
-    return mode === "tag" ? (loading ? combined : items) : combined
-  }, [query, fuse, items, mode, loading])
+    return mode === "tag" ? (loading ? combined : items) : combined;
+  }, [query, fuse, items, mode, loading]);
 
-  return { items: filteredItems, loading }
+  return { items: filteredItems, loading };
 }

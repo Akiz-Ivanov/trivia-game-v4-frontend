@@ -1,4 +1,4 @@
-import type { FormOptions } from "@/types/formConfig.types";
+import type { FormOptions } from "@/types/formConfig";
 
 const TITLES = [
   "Ready, set, quiz! Choose your topic and start your trivia adventure!",

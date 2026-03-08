@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { cva } from "class-variance-authority";
-import type { TriviaQuestion } from "@/types/trivia-db.types.js";
+import type { TriviaQuestion } from "@/types/trivia-db.js";
 import { useSettingsStore } from "@/store/settingsStore";
+import type { ProcessAnswerSelection } from "@/types/game";
 
 const answerButtonVariants = cva(
   //* Base styles common to all
@@ -92,11 +93,7 @@ type AnswerButtonProps = {
   questionData: TriviaQuestion;
   selectedAnswer: string | null;
   removedAnswers: string[];
-  processAnswerSelection: (
-    answer: string,
-    isCorrect: boolean,
-    timeLeft?: number,
-  ) => void;
+  processAnswerSelection: ProcessAnswerSelection;
   index: number;
   firstAnswerRef?: React.RefObject<HTMLButtonElement | null>;
   timeLeft?: number;

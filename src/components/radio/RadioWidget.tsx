@@ -57,6 +57,14 @@ const RadioWidget = ({
   const isFavorite = useRadioStore((state) =>
     state.favorites.some((s) => s.stationuuid === currentStation?.stationuuid),
   );
+  const cleanupAudio = useRadioStore((state) => state.cleanupAudio);
+
+  //*====== Cleanup audio when component unmounts ======
+  useEffect(() => {
+    return () => {
+      cleanupAudio();
+    };
+  }, []);
 
   //*====== Close radio widget on click outside ======
   useEffect(() => {

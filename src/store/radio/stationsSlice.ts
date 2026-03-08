@@ -83,7 +83,6 @@ export const createStationsSlice: StateCreator<
         set({
           currentStationId: data[0].stationuuid,
           currentStationInfo: data[0],
-          isPlaying: true,
         });
         get().initializeAudio(data[0]);
       }

@@ -4,7 +4,7 @@ import { Lightbulb, Sparkles, Loader2 } from "lucide-react";
 import aiApi from "@/services/aiApi";
 import InfoPanelAI from "./InfoPanelAI";
 
-import type { TriviaQuestion } from "@/types/trivia-db.types";
+import type { TriviaQuestion } from "@/types/trivia-db";
 import { Button } from "@/components/ui/button";
 import { useSettingsStore } from "@/store/settingsStore";
 

@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import StationItem from "./StationItem";
-import type { Station } from "@/types/radio.types";
+import type { Station } from "@/types/radio";
 
 const DraggableStationItem = ({ station }: { station: Station }) => {
   const {

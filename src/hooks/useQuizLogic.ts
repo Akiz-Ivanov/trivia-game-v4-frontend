@@ -1,55 +1,58 @@
-import { useEffect, useRef, useState } from "react"
-import shuffleArray from "@/utils/shuffle"
+import { useEffect, useRef, useState } from "react";
+import shuffleArray from "@/utils/shuffle";
 
-import type { TriviaQuestion } from "@/types/trivia-db.types"
+import type { TriviaQuestion } from "@/types/trivia-db";
 
 type QuizLogicReturn = {
-  removedAnswers: string[]
-  firstAnswerRef: React.RefObject<HTMLButtonElement | null>
-  nextButtonRef: React.RefObject<HTMLButtonElement | null>
-  handleFiftyFifty: (questionData: TriviaQuestion) => void
-  setRemovedAnswers: React.Dispatch<React.SetStateAction<string[]>>
-}
+  removedAnswers: string[];
+  firstAnswerRef: React.RefObject<HTMLButtonElement | null>;
+  nextButtonRef: React.RefObject<HTMLButtonElement | null>;
+  handleFiftyFifty: (questionData: TriviaQuestion) => void;
+  setRemovedAnswers: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 type QuizLogicProps = {
-  questionData: TriviaQuestion
-  selectedAnswer: string | null
-}
+  questionData: TriviaQuestion;
+  selectedAnswer: string | null;
+};
 
-export function useQuizLogic({ questionData, selectedAnswer }: QuizLogicProps): QuizLogicReturn {
-  const [removedAnswers, setRemovedAnswers] = useState<string[]>([])
-  const firstAnswerRef = useRef<HTMLButtonElement>(null)
-  const nextButtonRef = useRef<HTMLButtonElement>(null)
+export function useQuizLogic({
+  questionData,
+  selectedAnswer,
+}: QuizLogicProps): QuizLogicReturn {
+  const [removedAnswers, setRemovedAnswers] = useState<string[]>([]);
+  const firstAnswerRef = useRef<HTMLButtonElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
 
   //* Focus management
   useEffect(() => {
     if (!selectedAnswer) {
-      firstAnswerRef.current?.focus()
+      firstAnswerRef.current?.focus();
     }
-  }, [questionData.id, selectedAnswer])
+  }, [questionData.id, selectedAnswer]);
 
   useEffect(() => {
     if (selectedAnswer) {
-      nextButtonRef.current?.focus()
+      nextButtonRef.current?.focus();
     }
-  }, [selectedAnswer])
+  }, [selectedAnswer]);
 
   //* ====== Reset removedAnswers when question changes ======
   useEffect(() => {
-    setRemovedAnswers([])
-  }, [questionData.id])
+    setRemovedAnswers([]);
+  }, [questionData.id]);
 
   const handleFiftyFifty = (questionData: TriviaQuestion) => {
-    const shuffledIncorrect = shuffleArray(questionData.incorrect_answers)
-    const removed = shuffledIncorrect.slice(0, 2)
-    setRemovedAnswers(removed)
-  }
+    const shuffledIncorrect = shuffleArray(questionData.incorrect_answers);
+    const removed = shuffledIncorrect.slice(0, 2);
+    setRemovedAnswers(removed);
+  };
 
   return {
     removedAnswers,
     firstAnswerRef,
     nextButtonRef,
     handleFiftyFifty,
-    setRemovedAnswers
-  }
+    setRemovedAnswers,
+  };
 }

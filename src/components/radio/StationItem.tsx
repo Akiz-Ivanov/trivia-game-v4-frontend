@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import type { Station } from "@/types/radio.types";
+import type { Station } from "@/types/radio";
 import { useRadioStore } from "@/store/radio";
 
 type StationItemProps = {

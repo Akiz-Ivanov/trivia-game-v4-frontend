@@ -23,7 +23,7 @@ RULES:
 
    - "User says: The British Empire ended in 1997." →
      "1997 marked Hong Kong's return to China.\n\nFun fact: The handover ceremony lasted 6 hours."
-`
+`;
 
 const HINT_SYSTEM_PROMPT: string = `
 You are a trivia assistant that gives helpful, subtle clues — without ever revealing the correct answer.
@@ -58,6 +58,6 @@ EXAMPLES:
 ❌ "The correct answer is actually..."
 
 Respond with ONLY the hint text. No explanation or framing.
-`
+`;
 
-export { EXTRA_INFO_SYSTEM_PROMPT, HINT_SYSTEM_PROMPT }
+export { EXTRA_INFO_SYSTEM_PROMPT, HINT_SYSTEM_PROMPT };

@@ -1,75 +1,118 @@
-import { decode } from 'html-entities'
-import axios from 'axios'
-import { nanoid } from 'nanoid'
+import { decode } from "html-entities";
+import axios from "axios";
+import { nanoid } from "nanoid";
 
-import type { TriviaQuestion, QuestionData, TriviaAPI } from '../types/trivia-db.types'
+import type {
+  TriviaQuestion,
+  QuestionData,
+  TriviaAPI,
+} from "../types/trivia-db";
 
-let sessionToken: string | null = null
+const SESSION_TOKEN_KEY = "trivia_session_token";
+
+const getStoredToken = (): string | null => {
+  return localStorage.getItem(SESSION_TOKEN_KEY);
+};
+
+const saveToken = (token: string) => {
+  localStorage.setItem(SESSION_TOKEN_KEY, token);
+};
+
+const clearToken = () => {
+  localStorage.removeItem(SESSION_TOKEN_KEY);
+};
 
 //* ====== Get new session token ======
-const getNewSessionToken = async (): Promise<string | null> => {
-    try {
-        const response = await axios.get('https://opentdb.com/api_token.php?command=request')
-        sessionToken = response.data.token
-        return sessionToken
-    } catch (error) {
-        console.error('Failed to get token:', error)
-        throw error
+const getNewSessionToken = async (): Promise<string> => {
+  try {
+    const response = await axios.get(
+      "https://opentdb.com/api_token.php?command=request",
+    );
+    const token = response.data.token;
+    saveToken(token);
+    return token;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Failed to get token (Axios):",
+        error.response?.status,
+        error.message,
+      );
+    } else if (error instanceof Error) {
+      console.error("Failed to get token (Error):", error.message);
+    } else {
+      console.error("Failed to get token (Unknown):", error);
     }
-}
-
-// export const resetTriviaToken = () => {
-//     sessionToken = null
-// }
+    throw error;
+  }
+};
 
 //* ====== Fetch trivia data from API ======
 const fetchTriviaData = async (
-    amount: string,
-    category: string,
-    difficulty: "easy" | "medium" | "hard" | "Any"
-): Promise<TriviaQuestion[] | undefined> => {
+  amount: string,
+  category: string,
+  difficulty: "easy" | "medium" | "hard" | "Any",
+): Promise<TriviaQuestion[]> => {
+  let token = getStoredToken();
 
-    if (!sessionToken) {
-        await getNewSessionToken()
+  if (!token) {
+    token = await getNewSessionToken();
+  }
+
+  const params: Record<string, string> = {
+    amount,
+    token,
+  };
+
+  if (category !== "Any") params.category = category;
+  if (difficulty !== "Any") params.difficulty = difficulty;
+
+  try {
+    const response = await axios.get<TriviaAPI>("https://opentdb.com/api.php", {
+      params,
+    });
+
+    const { response_code, results } = response.data;
+
+    //* Token empty / expired → get new one and retry once
+    if (response_code === 4) {
+      clearToken();
+      await getNewSessionToken();
+      return fetchTriviaData(amount, category, difficulty);
     }
 
-    const params: Record<string, string> = {
-        amount,
-        token: sessionToken as string
+    //* API Error
+    if (response_code !== 0) {
+      throw new Error(`API Error ${response_code}`);
     }
-    
-    if (category !== "Any") params.category = category
-    if (difficulty !== "Any") params.difficulty = difficulty
 
-    try {
-        const response = await axios.get<TriviaAPI>('https://opentdb.com/api.php', { params })
-
-        const { response_code, results } = response.data
-
-        //* Token empty / expired → get new one and retry once
-        if (response_code === 4) {
-            await getNewSessionToken()
-            return fetchTriviaData(amount, category, difficulty)
-        }
-
-        //* API Error
-        if (response_code !== 0) {
-            throw new Error(`API Error ${response_code}`);
-        }
-
-        //* Success
-        return results.map((questionData: QuestionData): TriviaQuestion => ({
-            ...questionData,
-            question: decode(questionData.question),
-            correct_answer: decode(questionData.correct_answer),
-            incorrect_answers: questionData.incorrect_answers.map((answer: string) => decode(answer)),
-            category: decode(questionData.category),
-            id: nanoid()
-        }))
-
-    } catch (error) {
-        console.error('Error fetching trivia data:', error)
+    //* Success
+    return results.map(
+      (questionData: QuestionData): TriviaQuestion => ({
+        ...questionData,
+        question: decode(questionData.question),
+        correct_answer: decode(questionData.correct_answer),
+        incorrect_answers: questionData.incorrect_answers.map(
+          (answer: string) => decode(answer),
+        ),
+        category: decode(questionData.category),
+        id: nanoid(),
+      }),
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Trivia API request failed:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        message: error.message,
+      });
+    } else if (error instanceof Error) {
+      console.error("Error fetching trivia data:", error.message);
+    } else {
+      console.error("Unknown error fetching trivia data:", error);
     }
-}
+    throw error; //* Re-throw for App.tsx to handle
+  }
+};
 
-export default { fetchTriviaData }
+export default { fetchTriviaData };

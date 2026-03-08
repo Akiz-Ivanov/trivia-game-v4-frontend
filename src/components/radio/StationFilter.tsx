@@ -1,4 +1,4 @@
-import type { Mode } from "@/types/radio.types";
+import type { Mode } from "@/types/radio";
 import { cn } from "@/lib/utils";
 import { useRadioStore } from "@/store/radio";
 

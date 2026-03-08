@@ -1,116 +1,103 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import { useGame } from "@/hooks/useGame";
+import { useGameStats } from "@/hooks/useGameStats";
 import shuffleArray from "@/utils/shuffle";
 import QuizCard from "./trivia/QuizCard";
 import Results from "./results/Results";
 import { AnimatePresence } from "framer-motion";
 import { playCorrectSound } from "@/utils/soundManager";
-import { calculateScore } from "@/utils/scoreCalculator";
+import { ScorePopup } from "../ScorePopup";
 
-import type { TriviaQuestion } from "@/types/trivia-db.types";
+import type { TriviaQuestion } from "@/types/trivia-db";
+import type { GameScreen } from "@/types/screen";
+import { StatsProvider } from "@/context/StatsProvider";
+import { GameProvider } from "@/context/GameProvider";
+import type { ProcessAnswerSelection } from "@/types/game";
 
 type GameManagerProps = {
   triviaData: TriviaQuestion[];
   resetGame: () => void;
 };
 
-import type { GameScreen } from "@/types/screen.types";
-import { ScorePopup } from "../ScorePopup";
-
-const GameManager = ({
+const GameManagerContent = ({
   triviaData,
   resetGame,
 }: GameManagerProps): React.JSX.Element => {
   //* ====== Game State ======
-  const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [gameScreen, setGameScreen] = useState<GameScreen>("quiz");
-  const [correctCount, setCorrectCount] = useState<number>(0);
-  const [isMetaVisible, setIsMetaVisible] = useState<boolean>(true);
-  const [currentStreak, setCurrentStreak] = useState(0);
-  const [totalScore, setTotalScore] = useState(0);
+  const game = useGame();
+  const stats = useGameStats();
+  // const isTimerEnabled = useSettingsStore((state) => state.timer);
+
+  const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
+  const [showScorePopup, setShowScorePopup] = useState(false);
   const [lastScore, setLastScore] = useState<{
     points: number;
     multiplier: number;
   } | null>(null);
-  const [showScorePopup, setShowScorePopup] = useState(false);
 
-  const toggleMetaVisibility = () => setIsMetaVisible((prev) => !prev);
-
-  //* ====== Game Config ======
-  const numOfQuestions: number = triviaData.length;
-
-  //* ====== Shuffle answers ======
+  // Shuffle answers when question changes
   useEffect(() => {
     if (triviaData.length) {
-      const {
-        incorrect_answers: incorrectAnswers,
-        correct_answer: correctAnswer,
-      } = triviaData[currentQuestionIndex];
-      const answers = [...incorrectAnswers, correctAnswer];
-      const shuffledAnswers = shuffleArray(answers);
-      setShuffledAnswers(shuffledAnswers);
+      const { incorrect_answers, correct_answer } =
+        triviaData[game.currentQuestionIndex];
+      const answers = shuffleArray([...incorrect_answers, correct_answer]);
+      setShuffledAnswers(answers);
     }
-  }, [triviaData, currentQuestionIndex]);
+  }, [triviaData, game.currentQuestionIndex]);
 
-  //* ====== Load next question ======
-  const loadNextQuestion = () => {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
-    setSelectedAnswer(null);
+  const processAnswerSelection: ProcessAnswerSelection = (
+    answer,
+    isCorrect,
+    timeLeft,
+    totalTime = 30,
+  ) => {
+    if (game.selectedAnswer) return;
+    game.setSelectedAnswer(answer);
+
+    const difficulty = triviaData[game.currentQuestionIndex].difficulty;
+    const timeTaken = timeLeft !== undefined ? totalTime - timeLeft : 0;
+
+    const result = stats.recordAnswer({
+      questionIndex: game.currentQuestionIndex,
+      difficulty: difficulty as "easy" | "medium" | "hard",
+      correct: isCorrect,
+      timeTaken,
+      timeLeft: timeLeft ?? totalTime,
+      totalTime,
+    });
+
+    if (result) {
+      setLastScore(result);
+      setShowScorePopup(true);
+      setTimeout(() => setShowScorePopup(false), 2000);
+      playCorrectSound();
+    }
   };
 
-  //* ====== Process the selected answer (correct or incorrect) ======
-  const processAnswerSelection = useCallback(
-    (answer: string, isCorrect: boolean, timeLeft?: number) => {
-      if (selectedAnswer) return;
-      setSelectedAnswer(answer);
-
-      if (isCorrect) {
-        setCorrectCount((prev) => prev + 1);
-
-        const newStreak = Math.min(currentStreak + 1, 3);
-        setCurrentStreak(newStreak);
-
-        const difficulty = triviaData[currentQuestionIndex].difficulty;
-
-        const points = calculateScore(
-          difficulty as "easy" | "medium" | "hard",
-          timeLeft ?? 30,
-          30,
-          newStreak,
-        );
-
-        setTotalScore((prev) => prev + points);
-
-        // ✅ Show score popup
-        setLastScore({ points, multiplier: newStreak });
-        setShowScorePopup(true);
-
-        // Hide popup after 2 seconds
-        setTimeout(() => {
-          setShowScorePopup(false);
-        }, 2000);
-
-        playCorrectSound();
-      } else {
-        setCurrentStreak(0);
-      }
-    },
-    [selectedAnswer, currentStreak, triviaData, currentQuestionIndex],
-  );
-
-  //* ====== Handle game end ======
   const handleShowResults = () => {
     setGameScreen("results");
   };
 
-  const handleTimedOut = useCallback(() => {
-    const incorrectAnswers = triviaData[currentQuestionIndex].incorrect_answers;
+  const handleTimedOut = () => {
+    const incorrectAnswers =
+      triviaData[game.currentQuestionIndex].incorrect_answers;
     const randomIncorrect =
       incorrectAnswers[Math.floor(Math.random() * incorrectAnswers.length)];
-    setSelectedAnswer(randomIncorrect);
-    setCurrentStreak(0);
-  }, [triviaData, currentQuestionIndex]);
+    game.setSelectedAnswer(randomIncorrect);
+    stats.resetStreak();
+
+    //* Record the timeout as incorrect
+    const difficulty = triviaData[game.currentQuestionIndex].difficulty;
+    stats.recordAnswer({
+      questionIndex: game.currentQuestionIndex,
+      difficulty: difficulty as "easy" | "medium" | "hard",
+      correct: false,
+      timeTaken: 30, // Used all time
+      timeLeft: 0,
+      totalTime: 30,
+    });
+  };
 
   return (
     <>
@@ -125,34 +112,30 @@ const GameManager = ({
       {gameScreen === "quiz" && (
         <AnimatePresence mode="wait">
           <QuizCard
-            key={triviaData[currentQuestionIndex].id}
-            questionData={triviaData[currentQuestionIndex]}
+            key={triviaData[game.currentQuestionIndex].id}
+            questionData={triviaData[game.currentQuestionIndex]}
             answers={shuffledAnswers}
-            isLastQuestion={currentQuestionIndex === triviaData.length - 1}
-            selectedAnswer={selectedAnswer}
+            isLastQuestion={game.currentQuestionIndex === triviaData.length - 1}
             processAnswerSelection={processAnswerSelection}
-            nextQuestion={loadNextQuestion}
-            currentQuestionIndex={currentQuestionIndex}
-            numOfQuestions={numOfQuestions}
+            numOfQuestions={triviaData.length}
             handleShowResults={handleShowResults}
-            isMetaVisible={isMetaVisible}
-            toggleMetaVisibility={toggleMetaVisibility}
             handleTimedOut={handleTimedOut}
-            currentStreak={currentStreak}
-            totalScore={totalScore}
           />
         </AnimatePresence>
       )}
 
-      {gameScreen === "results" && (
-        <Results
-          correctCount={correctCount}
-          numOfQuestions={numOfQuestions}
-          resetGame={resetGame}
-        />
-      )}
+      {gameScreen === "results" && <Results resetGame={resetGame} />}
     </>
   );
 };
+
+// Wrap with both providers
+const GameManager = (props: GameManagerProps) => (
+  <GameProvider>
+    <StatsProvider>
+      <GameManagerContent {...props} />
+    </StatsProvider>
+  </GameProvider>
+);
 
 export default GameManager;

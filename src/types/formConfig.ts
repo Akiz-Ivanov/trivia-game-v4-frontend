@@ -7,7 +7,7 @@ type Category = {
   value: string;
 };
 
-type DifficultyValue = "easy" | "medium" | "hard";
+export type DifficultyValue = "easy" | "medium" | "hard";
 
 type Difficulty = {
   name: Capitalize<DifficultyValue>;

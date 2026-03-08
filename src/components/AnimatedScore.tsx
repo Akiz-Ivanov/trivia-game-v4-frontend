@@ -19,7 +19,7 @@ export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
     Math.round(val).toLocaleString(),
   );
 
-  const prevScore = useRef(score);
+  const prevScore = useRef<number>(score);
   const controls = useAnimationControls();
 
   useEffect(() => {

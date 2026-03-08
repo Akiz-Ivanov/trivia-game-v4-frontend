@@ -18,9 +18,9 @@ import { SparklesCore } from "@/components/ui/sparkles";
 import { migrateLocalStorage } from "@/utils/migrateLocalStorage";
 
 //* ====== Types ======
-import type { TriviaQuestion } from "./types/trivia-db.types";
-import type { GameFormData } from "./types/game-form.types";
-import type { Screen } from "./types/screen.types";
+import type { TriviaQuestion } from "./types/trivia-db";
+import type { GameFormData } from "./types/game-form";
+import type { Screen } from "./types/screen";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { useSettingsStore } from "./store/settingsStore";
 

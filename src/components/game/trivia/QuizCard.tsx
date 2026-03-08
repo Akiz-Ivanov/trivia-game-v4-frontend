@@ -1,65 +1,57 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, BarChart2, Clock, Eye, EyeOff, Timer } from "lucide-react";
+import { ArrowRight, BarChart2, Clock } from "lucide-react";
 import { getPreloadedCategoryBg } from "@/assets/imports.ts";
 import insertSoftHyphens from "@/utils/insertSoftHyphens.js";
 import GameMeta from "./GameMeta.js";
 import TriviaAddons from "./trivia-addons/TriviaAddons.js";
 import Card from "@/components/common/Card.js";
-import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button.js";
-import type { TriviaQuestion } from "@/types/trivia-db.types.js";
-import type { Category } from "@/types/imports.types.js";
+import type { TriviaQuestion } from "@/types/trivia-db.js";
+import type { Category } from "@/types/imports.js";
 import AnswerButton from "./AnswerButton.js";
 import { useQuizTimer } from "@/hooks/useQuizTimer.js";
-import { CircularTimer } from "@/components/CircularTimer.js";
-import ComboMeter from "@/components/ComboMeter.js";
-import { AnimatedScore } from "@/components/AnimatedScore.js";
 import { useQuizLogic } from "@/hooks/useQuizLogic.js";
 import { useSettingsStore } from "@/store/settingsStore.js";
-import { formatTime } from "@/utils/formatTime.js";
-import { StickyWrapper } from "@/components/StickyWrapper.js";
 import { useMediaQuery } from "@/hooks/useMediaQuery.js";
+import { useGame } from "@/hooks/useGame.js";
+import { useGameStats } from "@/hooks/useGameStats.js";
+import { MetaToggleButton } from "./trivia-addons/MetaToggleButton.js";
+import { TimeUpNotification } from "./trivia-addons/TimeUpNotification.js";
+import type { ProcessAnswerSelection } from "@/types/game.js";
+import { DesktopHUD, MobileHUD } from "./trivia-addons/QuizHUD.js";
 
 type QuizCardProps = {
   questionData: TriviaQuestion;
   answers: string[];
-  processAnswerSelection: (
-    answer: string,
-    isCorrect: boolean,
-    timeLeft?: number,
-  ) => void;
-  nextQuestion: () => void;
+  processAnswerSelection: ProcessAnswerSelection;
   isLastQuestion: boolean;
-  selectedAnswer: string | null;
-  currentQuestionIndex: number;
   numOfQuestions: number;
   handleShowResults: () => void;
-  isMetaVisible: boolean;
-  toggleMetaVisibility: () => void;
   handleTimedOut: () => void;
-  currentStreak: number;
-  totalScore: number;
 };
 
 const QuizCard = ({
   questionData,
   answers,
   processAnswerSelection,
-  nextQuestion,
   isLastQuestion,
-  selectedAnswer,
-  currentQuestionIndex,
   numOfQuestions,
   handleShowResults,
-  isMetaVisible,
-  toggleMetaVisibility,
   handleTimedOut,
-  currentStreak,
-  totalScore,
 }: QuizCardProps): React.JSX.Element => {
   //* State values
   const [bgUrl, setBgUrl] = useState<string | null>(null);
+
+  const {
+    selectedAnswer,
+    isMetaVisible,
+    currentQuestionIndex,
+    nextQuestion,
+    toggleMeta,
+  } = useGame();
+
+  const { totalScore, currentStreak } = useGameStats();
 
   const animations = useSettingsStore((state) => state.animations);
   const illustrations = useSettingsStore((state) => state.illustrations);
@@ -125,7 +117,7 @@ const QuizCard = ({
         asMotion={true}
         className={cn(
           "gap-3-16 text-15-18 sm:px-8 relative",
-          "before:content-[''] before:absolute before:inset-0 before:bg-[oklch(0%_0_none_/_0.3)] before:-z-10 xs:before:rounded-xl",
+          "before:content-[''] before:absolute before:inset-0 before:bg-[oklch(0%_0_none/0.3)] before:-z-10 xs:before:rounded-xl",
           {
             "xs:shadow-hard": questionData.difficulty === "hard",
             "xs:shadow-medium": questionData.difficulty === "medium",
@@ -171,38 +163,11 @@ const QuizCard = ({
         }
       >
         {/* Time's up notification */}
-        {isXs && animations && isTimerEnabled && (
-          <AnimatePresence>
-            {timeLeft === 0 && (
-              <motion.div
-                role="alert"
-                aria-atomic="true"
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 flex justify-center items-center"
-                initial={{ opacity: 0, scale: 0.5, y: -20 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: 0,
-                  transition: {
-                    delay: 1.5,
-                    duration: 0.4,
-                    ease: [0.34, 1.56, 0.64, 1],
-                  },
-                }}
-                exit={{
-                  opacity: 0,
-                  scale: 0.8,
-                  transition: { duration: 0.2 },
-                }}
-              >
-                <div className="whitespace-nowrap border-2 border-error-foreground rounded-full py-1.5 px-4 bg-popover text-error-foreground font-bold inline-flex justify-center items-center gap-1.5 shadow-lg ring-2 ring-accent ring-offset-2 ring-offset-background">
-                  <Timer size={20} />
-                  <span>{timeUpMessage}</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+        <TimeUpNotification
+          timeLeft={timeLeft}
+          timeUpMessage={timeUpMessage}
+          isTimerEnabled={isTimerEnabled}
+        />
         <p key={selectedAnswer} aria-live="polite" className="sr-only">
           {selectedAnswer
             ? selectedAnswer === questionData.correct_answer
@@ -212,47 +177,10 @@ const QuizCard = ({
         </p>
 
         {/* ====== Meta Toggle Button ====== */}
-        <div className="absolute top-2 right-10 xs:top-2.5 xs:right-2">
-          <button
-            type="button"
-            onClick={toggleMetaVisibility}
-            className={cn(
-              "rounded-full bg-popover text-accent/50",
-              "transition-all duration-400 focus:outline-none focus:ring-2 focus:ring-ring/50",
-              "opacity-50 hover:opacity-100 hover:outline-1 hover:outline-ring",
-              "flex items-center justify-center overflow-hidden",
-              "focus:opacity-100 xs:focus-within:w-[7.5rem]",
-              "size-8 xs:hover:w-[7.5rem] group relative",
-            )}
-            aria-label={
-              isMetaVisible ? "Hide game information" : "Show game information"
-            }
-          >
-            {/* Text - visible on hover or focus on larger screens */}
-            {isXs && (
-              <span
-                className={cn(
-                  "whitespace-nowrap text-sm font-medium",
-                  "transition-all duration-200",
-                  "opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-[5rem]",
-                  "group-focus:opacity-100 group-focus:max-w-[5rem]",
-                  "ml-2 mr-6",
-                )}
-              >
-                {isMetaVisible ? "Hide Info" : "Show Info"}
-              </span>
-            )}
-
-            {/* Icon - centered with absolute positioning */}
-            <span className="absolute xs:right-1.5 flex-shrink-0">
-              {isMetaVisible ? (
-                <EyeOff className="size-6 xs:size-5" />
-              ) : (
-                <Eye className="size-6 xs:size-5" />
-              )}
-            </span>
-          </button>
-        </div>
+        <MetaToggleButton
+          isMetaVisible={isMetaVisible}
+          toggleMeta={toggleMeta}
+        />
 
         {/* ====== Meta ====== */}
         {isMetaVisible && (
@@ -264,51 +192,22 @@ const QuizCard = ({
           />
         )}
 
-        {/* ====== Desktop Layout HUD ====== */}
-        <div className="hidden xs:flex w-full justify-between items-center relative">
-          <AnimatedScore score={totalScore} />
+        <DesktopHUD
+          totalScore={totalScore}
+          currentStreak={currentStreak}
+          isHalloween={isHalloween}
+          isTimerEnabled={isTimerEnabled}
+          timeLeft={timeLeft}
+          totalTime={totalTime}
+        />
 
-          <div className="absolute left-1/2 -translate-x-1/2">
-            <ComboMeter
-              currentStreak={currentStreak}
-              isHalloween={isHalloween}
-            />
-          </div>
-
-          {isTimerEnabled && (
-            <div>
-              <CircularTimer
-                timeLeft={timeLeft}
-                totalTime={totalTime}
-                size={46}
-                strokeWidth={4}
-              />
-            </div>
-          )}
-        </div>
-
-        {/* ====== Mobile Layout HUD ====== */}
-        <StickyWrapper>
-          <div className="flex xs:hidden w-screen justify-between items-center relative">
-            <AnimatedScore score={totalScore} />
-
-            <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
-              <ComboMeter
-                currentStreak={currentStreak}
-                isHalloween={isHalloween}
-              />
-            </div>
-
-            {isTimerEnabled && (
-              <div className="rounded-s-full rounded-e-none score-time-container py-1 px-3 min-w-16 flex items-center gap-1">
-                <span className="font-bold text-lg tabular-nums">
-                  {formatTime(timeLeft)}
-                </span>
-                <Clock className="size-4" />
-              </div>
-            )}
-          </div>
-        </StickyWrapper>
+        <MobileHUD
+          totalScore={totalScore}
+          currentStreak={currentStreak}
+          isHalloween={isHalloween}
+          isTimerEnabled={isTimerEnabled}
+          timeLeft={timeLeft}
+        />
 
         {/* ====== Question ====== */}
         <h2
@@ -345,12 +244,7 @@ const QuizCard = ({
           Choose one of the answers.
         </p>
 
-        <div
-          className="relative w-full h-fit"
-          // after:content-[''] after:absolute after:bg-[url('/src/assets/svgs/halloween/evil-ghost.svg')]
-          // after:left-0 after:sm:size-32 after:lg:size-42 after:-top-4
-          // after:pointer-events-none"
-        >
+        <div className="relative w-full h-fit">
           {/* ====== NextQuestion/ShowResults button ====== */}
           <Button
             type="button"
@@ -361,8 +255,8 @@ const QuizCard = ({
             ref={nextButtonRef}
             className={cn(
               "inline-flex items-center justify-center px-8 py-3 mt-4 text-white font-semibold text-[1.1rem]",
-              "rounded-[2rem] border-2 border-white/30 bg-origin-border",
-              "transition-all duration-300 ease-in-out backdrop-blur-[4px]",
+              "rounded-4xl border-2 border-white/30 bg-origin-border",
+              "transition-all duration-300 ease-in-out backdrop-blur-xs",
               "hover:scale-[1.03] active:scale-95 active:shadow-[0_0_8px_rgba(0,195,255,0.2)]",
               "focus-visible:border-none outline-none will-change-transform",
               "focus-visible:ring-2 focus-visible:ring-ring",
