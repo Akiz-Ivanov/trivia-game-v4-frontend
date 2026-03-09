@@ -27,7 +27,6 @@ const GameManagerContent = ({
   const [gameScreen, setGameScreen] = useState<GameScreen>("quiz");
   const game = useGame();
   const stats = useGameStats();
-  // const isTimerEnabled = useSettingsStore((state) => state.timer);
 
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
   const [showScorePopup, setShowScorePopup] = useState(false);
@@ -36,7 +35,7 @@ const GameManagerContent = ({
     multiplier: number;
   } | null>(null);
 
-  // Shuffle answers when question changes
+  //* Shuffle answers when question changes
   useEffect(() => {
     if (triviaData.length) {
       const { incorrect_answers, correct_answer } =
@@ -93,7 +92,7 @@ const GameManagerContent = ({
       questionIndex: game.currentQuestionIndex,
       difficulty: difficulty as "easy" | "medium" | "hard",
       correct: false,
-      timeTaken: 30, // Used all time
+      timeTaken: 30, //* Used up all time
       timeLeft: 0,
       totalTime: 30,
     });
@@ -129,7 +128,6 @@ const GameManagerContent = ({
   );
 };
 
-// Wrap with both providers
 const GameManager = (props: GameManagerProps) => (
   <GameProvider>
     <StatsProvider>

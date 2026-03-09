@@ -75,7 +75,9 @@ const fetchTriviaData = async (
     const { response_code, results } = response.data;
 
     //* Token empty / expired → get new one and retry once
-    if (response_code === 4) {
+    //* Token not found (3) or empty (4) → get new one and retry
+    if (response_code === 3 || response_code === 4) {
+      console.log(`Token issue (code ${response_code}), refreshing...`);
       clearToken();
       await getNewSessionToken();
       return fetchTriviaData(amount, category, difficulty);

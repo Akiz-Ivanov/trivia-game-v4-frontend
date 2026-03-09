@@ -50,7 +50,7 @@ const ErrorScreen = ({
 
       {/* ====== Error Image or Skeleton ====== */}
       {illustrations && (
-        <div className="min-w-[min(18.75rem,80vw)] min-h-[min(18.75rem,80vw] relative">
+        <div className="min-w-[min(18.75rem,80vw)] min-h-[min(18.75rem,)80vw] relative">
           {!imageLoaded && <Skeleton className="h-full w-full absolute " />}
           <img
             src={errorImg}
@@ -79,10 +79,10 @@ const ErrorScreen = ({
           error?.message ||
           "An unexpected error occurred. Return to the home page."
         ) : (
-          <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-l-4 border-cyan-400 rounded-r-lg p-4 mb-6">
+          <div className="bg-linear-to-r from-cyan-500/20 to-blue-500/20 border-l-4 border-cyan-400 rounded-r-lg p-4 mb-6">
             <div className="flex gap-3">
               <HiOutlineLightBulb
-                className="w-6 h-6 text-cyan-400 flex-shrink-0"
+                className="w-6 h-6 text-cyan-400 shrink-0"
                 fill="none"
                 stroke="currentColor"
               />

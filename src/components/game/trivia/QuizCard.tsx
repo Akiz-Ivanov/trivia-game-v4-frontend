@@ -244,8 +244,8 @@ const QuizCard = ({
           Choose one of the answers.
         </p>
 
+        {/* ====== NextQuestion/ShowResults button ====== */}
         <div className="relative w-full h-fit">
-          {/* ====== NextQuestion/ShowResults button ====== */}
           <Button
             type="button"
             onClick={isLastQuestion ? handleShowResults : nextQuestion}

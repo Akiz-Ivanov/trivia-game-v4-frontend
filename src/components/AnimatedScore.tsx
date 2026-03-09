@@ -29,7 +29,21 @@ export const AnimatedScore = ({ score, className }: AnimatedScoreProps) => {
     if (score > prevScore.current) {
       controls.start({
         scale: [1, 1.15, 1],
-        transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
+        filter: [
+          "brightness(1) saturate(1) drop-shadow(0 0 0px transparent)",
+          "brightness(1.4) saturate(1.8) drop-shadow(0 0 12px var(--accent))",
+          "brightness(1) saturate(1.05) drop-shadow(0 0 0px transparent)",
+        ],
+        transition: {
+          scale: {
+            duration: 0.35,
+            ease: [0.34, 1.56, 0.64, 1],
+          },
+          filter: {
+            duration: 1.5,
+            ease: "easeOut",
+          },
+        },
       });
     }
 

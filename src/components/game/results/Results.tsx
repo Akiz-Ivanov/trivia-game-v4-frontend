@@ -1,93 +1,77 @@
-import { useState } from "react";
-import { Power } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Power, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Card from "@/components/common/Card";
-import Attributions from "./Attributions";
-
-import success from "@/assets/svgs/breaking-barriers-bro.svg";
 import { Button } from "@/components/ui/button";
-import { useSettingsStore } from "@/store/settingsStore";
 import { useGameStats } from "@/hooks/useGameStats";
-// import okay from "@/assets/svgs/andalusian-fair.svg"
+import { useSettingsStore } from "@/store/settingsStore";
+import { calculateDetailedStats } from "@/utils/calculateGameStats";
+import ResultsTabs from "./ResultsTabs";
 
 type ResultsProps = {
-  correctCount: number;
-  numOfQuestions: number;
   resetGame: () => void;
 };
 
-const Results = ({ resetGame }: ResultsProps): React.JSX.Element => {
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
-
+const Results = ({ resetGame }: ResultsProps) => {
+  const isTimerMode = useSettingsStore((state) => state.timer);
   const stats = useGameStats();
   const gameStats = stats.getGameStats();
 
-  const correctPercentage: number =
-    (gameStats.correctCount / gameStats.totalQuestions) * 100;
+  const {
+    totalScore,
+    correctCount,
+    totalQuestions,
+    maxStreak,
+    questionResults,
+  } = gameStats;
 
-  const backgroundGlow = useSettingsStore((state) => state.backgroundGlow);
-  const illustrations = useSettingsStore((state) => state.illustrations);
+  const detailedStats = calculateDetailedStats(
+    totalScore,
+    correctCount,
+    totalQuestions,
+    maxStreak,
+    questionResults,
+    isTimerMode,
+  );
+
   const animations = useSettingsStore((state) => state.animations);
-
-  const message: string =
-    correctPercentage < 33
-      ? "Better luck next time!"
-      : correctPercentage < 66
-        ? "Pretty good!"
-        : "Great job!";
-
-  const messageStyle: string =
-    correctPercentage < 33
-      ? "#ff7043"
-      : correctPercentage < 66
-        ? "#9fffb8"
-        : "#81c784";
+  const backgroundGlow = useSettingsStore((state) => state.backgroundGlow);
 
   return (
     <Card
       role="region"
       aria-label="Quiz results"
       className={cn(
-        "gap-3 px-8 py-4 relative",
+        "gap-6 px-6 py-6 relative max-w-2xl w-full",
         "shadow-[0_8px_32px_rgba(0,0,0,0.2)]",
-        "text-[1.2rem] max-w-[30rem]",
         backgroundGlow && "side-glow",
       )}
     >
+      {/* Screen reader announcement */}
       <p aria-live="polite" className="sr-only">
-        You answered {gameStats.correctCount} out of {gameStats.totalQuestions}{" "}
-        questions correctly. That's {correctPercentage.toFixed(0)}%. {message}
+        You scored {detailedStats.totalScore} points. You answered{" "}
+        {detailedStats.correctCount} out of {detailedStats.totalQuestions}{" "}
+        questions correctly. That's {detailedStats.percentage.toFixed(0)}%.
+        Grade: {detailedStats.grade}
       </p>
-      {illustrations && (
-        <div className="img-wrapper min-w-[min(18.75rem,80vw)] min-h-[min(18.75rem,80vw)] relative">
-          {!imageLoaded && <Skeleton className="h-full w-full absolute " />}
-          <img
-            src={success}
-            alt="Success"
-            onLoad={() => setImageLoaded(true)}
-            className={cn(
-              "max-w-[18.75rem] object-contain transform will-change-transform transition-all duration-800 ease-out",
-              {
-                "opacity-100 translate-y-0": imageLoaded && animations,
-                "opacity-0 translate-y-5": !imageLoaded && animations,
-                "opacity-100 translate-y-0 transition-none": !animations,
-              },
-            )}
-          />
-        </div>
-      )}
-      <h2>
-        Correct answers: {gameStats.correctCount} out of{" "}
-        {gameStats.totalQuestions}.
-      </h2>
-      <p>Percentage: {correctPercentage.toFixed(2)}%</p>
-      <p style={{ color: messageStyle }}>{message}</p>
-      <Button type="button" onClick={resetGame} variant="play-again">
-        Play Again <Power className="icon" size={20} strokeWidth={2} />
-      </Button>
 
-      <Attributions />
+      <ResultsTabs detailedStats={detailedStats} animations={animations} />
+
+      {/* Action Buttons */}
+      <nav className="flex gap-4 mt-6" aria-label="Game actions">
+        <Button type="button" onClick={resetGame} variant="play-again">
+          <Power className="mr-2" size={20} />
+          Play Again
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1 font-semibold py-6 text-base"
+          onClick={() => console.log("Share results")}
+        >
+          <Trophy className="mr-2" size={20} />
+          Share
+        </Button>
+      </nav>
     </Card>
   );
 };

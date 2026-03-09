@@ -1,7 +1,7 @@
 import Card from "@/components/common/Card";
 import { useState } from "react";
 import SettingsDialog from "@/components/common/SettingsDialog";
-import Attributions from "@/components/game/results/Attributions";
+import Attributions from "@/components/attributions/Attributions";
 import useAuth from "@/hooks/useAuth";
 import LogoutAlert from "@/components/auth/LogoutAlert";
 import AuthDialog from "@/components/auth/AuthDialog";
