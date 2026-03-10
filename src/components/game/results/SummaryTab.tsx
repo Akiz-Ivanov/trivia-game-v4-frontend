@@ -25,17 +25,17 @@ const SummaryTab = ({ detailedStats, animations }: SummaryTabProps) => {
         initial={animations ? { scale: 0.8, opacity: 0 } : false}
         animate={animations ? { scale: 1, opacity: 1 } : false}
         transition={animations ? { delay: 0.2, duration: 0.5 } : undefined}
-        className="relative overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 p-8 rounded-xl border-2 border-primary/30 shadow-[0_0_30px_rgba(0,195,255,0.2)]"
+        className="relative overflow-hidden bg-linear-to-br from-primary/20 to-accent/20 p-8 rounded-xl border-2 border-primary/30 shadow-[0_0_30px_rgba(0,195,255,0.2)]"
         aria-labelledby="total-score-heading"
       >
         {/* Glow effect background */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 blur-xl"
+          className="absolute inset-0 bg-linear-to-r from-cyan-500/10 to-purple-500/10 blur-xl"
           aria-hidden="true"
         />
 
         <div className="relative text-center">
-          <div className="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 mb-3 tabular-nums">
+          <div className="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-purple-400 mb-3 tabular-nums">
             <AnimatedNumber value={detailedStats.totalScore} />
           </div>
           <h2
@@ -52,7 +52,12 @@ const SummaryTab = ({ detailedStats, animations }: SummaryTabProps) => {
         <h3 className="sr-only" id="accuracy-heading">
           Accuracy Progress
         </h3>
-        <ProgressBar value={detailedStats.percentage} />
+        <ProgressBar
+          value={detailedStats.percentage}
+          height="md"
+          variant="spectrum"
+          animated={true}
+        />
         <p className="text-center text-foreground">
           {detailedStats.correctCount}/{detailedStats.totalQuestions} Correct •
           Max Streak: {detailedStats.maxStreak}🔥
@@ -101,24 +106,20 @@ const SummaryTab = ({ detailedStats, animations }: SummaryTabProps) => {
         >
           Difficulty Breakdown
         </h3>
-        <DifficultyBar
-          difficulty="easy"
-          correct={detailedStats.difficultyStats.easy.correct}
-          total={detailedStats.difficultyStats.easy.total}
-          delay={0}
-        />
-        <DifficultyBar
-          difficulty="medium"
-          correct={detailedStats.difficultyStats.medium.correct}
-          total={detailedStats.difficultyStats.medium.total}
-          delay={0.1}
-        />
-        <DifficultyBar
-          difficulty="hard"
-          correct={detailedStats.difficultyStats.hard.correct}
-          total={detailedStats.difficultyStats.hard.total}
-          delay={0.2}
-        />
+        {(["easy", "medium", "hard"] as const).map((diff, index) => {
+          const stats = detailedStats.difficultyStats[diff];
+          if (stats.total === 0) return null; //* Skip difficulty if not present
+
+          return (
+            <DifficultyBar
+              key={diff}
+              difficulty={diff}
+              correct={stats.correct}
+              total={stats.total}
+              delay={index * 0.1} //* Dynamic delay based on position
+            />
+          );
+        })}
       </section>
     </div>
   );

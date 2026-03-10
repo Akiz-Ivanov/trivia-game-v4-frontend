@@ -1,29 +1,42 @@
-import ProgressBar from "../../common/ProgressBar"
+import { useGameStats } from "@/hooks/useGameStats";
+import ProgressBar from "../../common/ProgressBar";
 
 type GameMetaProps = {
-    numOfQuestions: number
-    currentQuestionIndex: number
-    category: string
-    difficulty: "easy" | "medium" | "hard"
-}
+  numOfQuestions: number;
+  currentQuestionIndex: number;
+  category: string;
+  difficulty: "easy" | "medium" | "hard";
+};
 
-const GameMeta = ({ numOfQuestions, currentQuestionIndex, category, difficulty }: GameMetaProps): React.JSX.Element => {
-    
-    return (
-        <aside 
-            className="flex flex-col items-center justify-center w-full italic gap-2 text-card-foreground"
-            aria-label="Game progress and metadata"
-        >
-            {/* ====== Progress bar ====== */}
-            <ProgressBar value={((currentQuestionIndex + 1) / numOfQuestions) * 100} />
+const GameMeta = ({
+  numOfQuestions,
+  currentQuestionIndex,
+  category,
+  difficulty,
+}: GameMetaProps): React.JSX.Element => {
+  const { questionResults } = useGameStats();
+  const questionsAnswered = questionResults.length;
 
-            {/* ====== Question number & difficulty ====== */}
-            <span className="capitalize">Question {currentQuestionIndex + 1} / {numOfQuestions} • {difficulty}</span>
+  return (
+    <aside
+      className="flex flex-col items-center justify-center w-full italic gap-2 text-card-foreground"
+      aria-label="Game progress and metadata"
+    >
+      {/* ====== Progress bar ====== */}
+      <ProgressBar
+        height="sm"
+        value={(questionsAnswered / numOfQuestions) * 100}
+      />
 
-            {/* ====== Category ====== */}
-            <p className="game-category order-first">{category}</p>
-        </aside>
-    )
-}
+      {/* ====== Question number & difficulty ====== */}
+      <span className="capitalize">
+        Question {currentQuestionIndex + 1} / {numOfQuestions} • {difficulty}
+      </span>
 
-export default GameMeta
+      {/* ====== Category ====== */}
+      <p className="game-category order-first">{category}</p>
+    </aside>
+  );
+};
+
+export default GameMeta;

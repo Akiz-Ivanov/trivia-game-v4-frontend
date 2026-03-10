@@ -16,10 +16,10 @@ const DifficultyBar = ({
 }: DifficultyBarProps) => {
   const percentage = total > 0 ? (correct / total) * 100 : 0;
 
-  const colors = {
-    easy: "bg-green-500",
-    medium: "bg-blue-500",
-    hard: "bg-red-500",
+  const gradients = {
+    easy: "bg-gradient-to-r from-green-400 to-green-600",
+    medium: "bg-gradient-to-r from-blue-400 to-blue-600",
+    hard: "bg-gradient-to-r from-red-400 to-red-600",
   };
 
   return (
@@ -50,7 +50,10 @@ const DifficultyBar = ({
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.8, delay: delay + 0.2 }}
-          className={cn("h-full", colors[difficulty as keyof typeof colors])}
+          className={cn(
+            "h-full",
+            gradients[difficulty as keyof typeof gradients],
+          )}
         />
       </div>
     </motion.div>
